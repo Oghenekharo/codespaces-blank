@@ -64,7 +64,7 @@ const Login = () => {
 									<Entypo name={isPassword == true ? 'eye' : 'eye-with-line'} color={theme == 'light' ? COLORS.dimgray : COLORS.white} size={20} />
 								</TouchableOpacity>
 							</View>
-							<Link style={theme == 'light' ? stylesLight.linkText : stylesDark.linkText} href="/forgot-password">Forgot Password?</Link>
+							<Link style={theme == 'light' ? stylesLight.linkText : stylesDark.linkText} href="/authDrawers/about">Forgot Password?</Link>
 							<View style={theme == 'light' ? stylesLight.inputContainer : stylesDark.inputContainer}>
 								<TouchableOpacity style={theme == 'light' ? stylesLight.button : stylesDark.button}>
 									<Text style={theme == 'light' ? stylesLight.buttonText : stylesDark.buttonText}>Login</Text>
@@ -77,7 +77,7 @@ const Login = () => {
 					</View>
 					<View style={{margin: 10, padding: 40, alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row'}}>
 						<View style={{}}>
-							<TouchableOpacity onPress={() => {}}>
+							<TouchableOpacity onPress={() => router.replace('/authDrawers/about')}>
 								<View style={theme == 'light' ? stylesLight.circleLinks : stylesDark.circleLinks}>
 									<Entypo name='info' color={theme == 'light' ? COLORS.white : COLORS.dark} size={20} />
 								</View>
@@ -85,7 +85,7 @@ const Login = () => {
 							</TouchableOpacity>
 						</View>
 						<View style={{}}>
-							<TouchableOpacity onPress={() => {}}>
+							<TouchableOpacity onPress={() => router.replace('/authDrawers/contact')}>
 								<View style={theme == 'light' ? stylesLight.circleLinks : stylesDark.circleLinks}>
 									<Entypo name='phone' color={theme == 'light' ? COLORS.white : COLORS.dark} size={20} />
 								</View>
@@ -93,7 +93,7 @@ const Login = () => {
 							</TouchableOpacity>
 						</View>
 						<View style={{}}>
-							<TouchableOpacity onPress={() => {}}>
+							<TouchableOpacity onPress={() => router.replace('/authDrawers/index')}>
 								<View style={theme == 'light' ? stylesLight.circleLinks : stylesDark.circleLinks}>
 									<Entypo name='phone' color={theme == 'light' ? COLORS.white : COLORS.dark} size={20} />
 								</View>
