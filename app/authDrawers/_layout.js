@@ -5,6 +5,13 @@ export default function DrawerNav() {
     <Drawer>
         <Drawer.Screen
             name="about"
+            options={{
+              headerShown: true,
+              headerTitleAlign: 'center'
+            }}
+        />
+        <Drawer.Screen
+            name="index"
         />
     </Drawer>
   );
