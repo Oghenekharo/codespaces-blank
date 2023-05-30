@@ -4,7 +4,17 @@
     "web": {
       "bundler": "metro"
     },
-    "name": "codespaces-blank",
+    "splash": {
+      "image": "./assets/images/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#fff"
+    },
+    "androidStatusBar": {
+      "barStyle": "light-content",
+      "hidden": false,
+      "translucent": false
+    },
+    "name": "Heirtous",
     "slug": "codespaces-blank"
   }
 }

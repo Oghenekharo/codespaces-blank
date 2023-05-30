@@ -1,7 +1,10 @@
 import { useRouter, useSegments } from "expo-router";
 import React, {useState} from "react";
 
-const AuthContext = React.createContext(null);
+const AuthContext = React.createContext({
+	credentials: {},
+	setCredentials: () => {}
+});
 const ThemeContext = React.createContext({
 	theme: 'light',
 	setTheme: () => {}
@@ -23,32 +26,31 @@ function useProtectedRoute(user) {
 
   React.useEffect(() => {
     const inAuthGroup = segments[0] === "(auth)";
-    const inAboutGroup = segments[0] === "authDrawers";
 
     if (
       // If the user is not signed in and the initial segment is not anything in the auth group.
-      !user && !inAuthGroup && !inAboutGroup
+      !user && !inAuthGroup
     ) {
       // Redirect to the sign-in page.
       router.replace("/(auth)/login");
-    } else if (user && inAuthGroup && inAboutGroup) {
+    } else if (user && inAuthGroup) {
       // Redirect away from the sign-in page.
       router.replace("/dashboard");
     }
   }, [user, segments]);
 }
 
-export function Provider(props) {
-  const [user, setAuth] = React.useState(null);
 
-  useProtectedRoute(user);
+export function Provider(props) {
+  const [credentials, setCredentials] = useState();
+
+  useProtectedRoute(credentials);
 
   return (
     <AuthContext.Provider
       value={{
-        signIn: () => setAuth({}),
-        signOut: () => setAuth(null),
-        user,
+        credentials, 
+        setCredentials
       }}
     >
 		{props.children}

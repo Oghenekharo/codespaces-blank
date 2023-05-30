@@ -10,11 +10,14 @@ const {theme} = useThemeContext();
 		<Tabs screenOptions={{
 			headerShown: false,
 			headerTitle: 'Test',
+			tabBarLabelStyle: {
+				fontFamily: 'DMRegular',
+			},
 			tabBarStyle: {
-				backgroundColor: theme == 'light' ? COLORS.white : COLORS.blue,
+				backgroundColor: theme == 'light' ? COLORS.white : COLORS.dark,
 				tabBarSelectedButtonColor: '#fff',
 			},
-			tabBarActiveTintColor: theme == 'light' ? COLORS.blue : theme == 'dark' ? COLORS.white : COLORS.gray
+			tabBarActiveTintColor: theme == 'light' ? COLORS.blue : theme == 'dark' ? COLORS.white : COLORS.lightText
 		}}>
 			<Tabs.Screen
 				name='login'
@@ -23,7 +26,7 @@ const {theme} = useThemeContext();
 					headerTitle: 'Login',
 					headerTitleAlign: 'center',
 					title: 'Login',
-					tabBarIcon: ({ focused }) => <Entypo name="home" color={focused && theme == 'light' ? COLORS.blue : focused && theme == 'dark' ? COLORS.white : COLORS.gray } size={25} />
+					tabBarIcon: ({ focused }) => <Entypo name="home" color={focused && theme == 'light' ? COLORS.blue : focused && theme == 'dark' ? COLORS.white : COLORS.lightText } size={25} />
 				}}
 			/>
 			<Tabs.Screen
@@ -32,7 +35,7 @@ const {theme} = useThemeContext();
 					// headerShown: false,
 					headerTitle: 'Register',
 					title: 'Register',
-					tabBarIcon: ({ focused }) => <Entypo name="user" color={focused && theme == 'light' ? COLORS.blue : focused && theme == 'dark' ? COLORS.white : COLORS.gray } size={25} />
+					tabBarIcon: ({ focused }) => <Entypo name="user" color={focused && theme == 'light' ? COLORS.blue : focused && theme == 'dark' ? COLORS.white : COLORS.lightText } size={25} />
 				}}
 			/>
 		</Tabs>
