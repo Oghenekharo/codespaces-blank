@@ -94,9 +94,9 @@ const Login = () => {
 					}
 				})
 				.catch((error) => {
-					setIsSubmitting(false)
+					setModalVisible(true)
 					handleMessage('error', `An error occured ${error}`)
-					console.log(error)
+					setIsSubmitting(false)
 				})
 		}
 	}

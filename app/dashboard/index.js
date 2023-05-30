@@ -1,9 +1,12 @@
 import React from 'react'
 import {View, Text} from 'react-native'
+import { useThemeContext, useAuth } from "../../context/auth";
 
 const Dashboard = () => {
+  const {credentials} = useAuth();
+  const {username} = credentials
   return (
-    <View><Text>Dashboard</Text></View>
+    <View><Text>Helo {username}</Text></View>
   )
 }
 
