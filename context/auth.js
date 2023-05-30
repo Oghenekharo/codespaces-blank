@@ -3,7 +3,8 @@ import React, {useState} from "react";
 
 const AuthContext = React.createContext({
 	credentials: {},
-	setCredentials: () => {}
+	setCredentials: () => {},
+  clearCredentials: () => {}
 });
 const ThemeContext = React.createContext({
 	theme: 'light',
@@ -35,7 +36,7 @@ function useProtectedRoute(user) {
       router.replace("/(auth)/login");
     } else if (user && inAuthGroup) {
       // Redirect away from the sign-in page.
-      router.replace("/dashboard");
+      router.push("/dashboard");
     }
   }, [user, segments]);
 }
@@ -50,7 +51,8 @@ export function Provider(props) {
     <AuthContext.Provider
       value={{
         credentials, 
-        setCredentials
+        setCredentials,
+        clearCredentials: () => useAuth(null)
       }}
     >
 		{props.children}

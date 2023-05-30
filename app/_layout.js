@@ -60,9 +60,9 @@ const RootLayout = () => {
       	})
    }
 
-   if (!fontsLoaded) {
+   	if (!fontsLoaded) {
       SplashScreen.preventAutoHideAsync();
-	}
+	}else{
 	return (
 		<Provider>
       	<Themes>
@@ -86,20 +86,12 @@ const RootLayout = () => {
 								}
 							}}
 						/>
-						<Stack.Screen 
-							name='dashboard'
-							options={{
-								headerShown: false,
-								headerStyle: {
-									backgroundColor: 'white',
-								}
-							}}
-						/>
 					</Stack>
 				</SafeAreaProvider>
 			</Themes>
     	</Provider>
   	)
+	}
 }
 
 export default RootLayout
