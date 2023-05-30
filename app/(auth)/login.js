@@ -15,7 +15,7 @@ const Login = () => {
 	//Useful Varialbles
 	const router = useRouter()
 	const [isPassword, setIsPassword] = useState(true)
-	const {setCredentials} = useAuth()
+	const {credentials, setCredentials} = useAuth()
 	const [message, setMessage] = useState('');
 	const [messageType, setMessageType] = useState('')
 	const {theme} = useThemeContext();
@@ -85,7 +85,7 @@ const Login = () => {
 						setModalVisible(true)
 						handleMessage('success',"Login successful")
                 	setTimeout(function(){
-							persistLogin(res)
+							persistLogin({...res})
                 	}, 200);
 					}else{
 						setModalVisible(true)
@@ -101,17 +101,20 @@ const Login = () => {
 		}
 	}
 
-	const persistLogin = (credentials) => {
+	const persistLogin = (res) => {
       AsyncStorage
-      	.setItem('Heirtous', JSON.stringify(credentials))
+      	.setItem('Heirtous', JSON.stringify(res))
       	.then((result) => {
-      		setCredentials(credentials)
+      		setCredentials(res)
       	})
         .catch((error) => {
             console.log(error)
       	})
    }
 
+	if(credentials != null) {
+		alert('Not null')
+	}
   	return (
    	<ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
 			<SafeAreaView style={theme == 'light' ? stylesLight.page : stylesDark.page}>

@@ -1,14 +1,25 @@
 import React from 'react'
 import {View, Text, ScrollView, SafeAreaView, TouchableOpacity} from 'react-native'
-import {Stack} from 'expo-router'
+import {Stack, useRouter} from 'expo-router'
 import { useThemeContext, useAuth } from "../../context/auth";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { stylesLight, stylesDark} from '../../assets/styles/authStyle'
 
 const Dashboard = () => {
-	const {credentials, clearCredentials} = useAuth();
+	const router = useRouter();
+	const {credentials, setCredentials} = useAuth();
 	const {theme} = useThemeContext()
-	const {username} = credentials
-	console.log(theme)
+	
+	const {username = ""} = credentials
+	
+	const clearLogin = () => {
+		AsyncStorage.removeItem('Heirtous')
+		.then(() => {
+			setCredentials(null)
+			router.replace("/(auth)/login")
+		})
+		.catch(error => console.log(error))
+	}
 	return (
 		<ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
 			<Stack.Screen
@@ -25,7 +36,10 @@ const Dashboard = () => {
 				<View style={theme == 'light' ? stylesLight.container : stylesDark.container}>
 					<View style={theme == 'light' ? stylesLight.textInputContainer : stylesDark.textInputContainer }>
 						<Text>Helo {username}</Text>
-						<TouchableOpacity onPress={() => clearCredentials} style={stylesDark.button}>
+						<TouchableOpacity onPress={() => {
+							clearLogin()
+							router.push('/(auth)/login')
+						}} style={stylesDark.button}>
 							<Text>Logout</Text>
 						</TouchableOpacity>
 					</View>

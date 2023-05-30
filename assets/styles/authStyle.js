@@ -60,8 +60,8 @@ export const stylesLight = StyleSheet.create({
     },
     button: {
         backgroundColor: COLORS.blue,
-        padding: 18,
-        borderRadius: 30,
+        padding: 13,
+        borderRadius: 24,
         width: '100%',
         shadowColor: '#000',
         shadowOffset: {
@@ -206,8 +206,8 @@ export const stylesDark = StyleSheet.create({
     },
     button: {
         backgroundColor: COLORS.white,
-        padding: 18,
-        borderRadius: 30,
+        padding: 13,
+        borderRadius: 24,
         width: '100%'
     },
     buttonText: {

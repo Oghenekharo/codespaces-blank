@@ -23,9 +23,7 @@ const RootLayout = () => {
          	await checkLoginCredentials();
         	} catch (e) {
          	console.warn(e);
-        	} finally {
-				persistLogin(credentials)
-			}
+        	}
       }
       prepare();
    }, []);
@@ -49,16 +47,16 @@ const RootLayout = () => {
 		.catch(error => console.log(error))
 	}
 
-	const persistLogin = (credentials) => {
-      AsyncStorage
-      	.setItem('Heirtous', JSON.stringify(credentials))
-      	.then((result) => {
-      		setCredentials(credentials)
-      	})
-        .catch((error) => {
-            console.log(error)
-      	})
-   }
+	// const persistLogin = (credentials) => {
+   //    AsyncStorage
+   //    	.setItem('Heirtous', JSON.stringify(credentials))
+   //    	.then((result) => {
+   //    		setCredentials(credentials)
+   //    	})
+   //      .catch((error) => {
+   //          console.log(error)
+   //    	})
+   // }
 
    	if (!fontsLoaded) {
       SplashScreen.preventAutoHideAsync();
