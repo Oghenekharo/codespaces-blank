@@ -15,7 +15,7 @@ const Login = () => {
 	//Useful Varialbles
 	const router = useRouter()
 	const [isPassword, setIsPassword] = useState(true)
-	const {setCredentials} = useAuth()
+	const {credentials, setCredentials} = useAuth()
 	const [message, setMessage] = useState('');
 	const [messageType, setMessageType] = useState('')
 	const {theme} = useThemeContext();
@@ -85,7 +85,7 @@ const Login = () => {
 						setModalVisible(true)
 						handleMessage('success',"Login successful")
                 	setTimeout(function(){
-							persistLogin(res)
+							persistLogin({...res})
                 	}, 200);
 					}else{
 						setModalVisible(true)
@@ -105,13 +105,16 @@ const Login = () => {
       AsyncStorage
       	.setItem('Heirtous', JSON.stringify(credentials))
       	.then((result) => {
-      		setCredentials(credentials)
+      		setCredentials(credentials);
       	})
         .catch((error) => {
             console.log(error)
       	})
    }
 
+	if(credentials != null) {
+		return <ActivityIndicator size="large" color={theme == 'light' ? COLORS.dark : COLORS.white} />
+	}
   	return (
    	<ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
 			<SafeAreaView style={theme == 'light' ? stylesLight.page : stylesDark.page}>
@@ -172,7 +175,7 @@ const Login = () => {
 									{isSubmitting == false 
 									? <Text style={theme == 'light' ? stylesLight.buttonText : stylesDark.buttonText}>Login</Text>
 									:
-									<ActivityIndicator size="large" color={theme == 'light' ? COLORS.white : COLORS.blue} />
+									<ActivityIndicator size="small" color={theme == 'light' ? COLORS.white : COLORS.blue} />
 									}
 								</TouchableOpacity>
 							</View>
