@@ -34,8 +34,8 @@ export const stylesLight = StyleSheet.create({
         marginHorizontal: 1,
         padding: 10,
         flexDirection: 'row',
-        marginBottom: 20,
-        marginTop: 25
+        marginBottom: 15,
+        marginTop: 15
     },
     textInput: {
         borderColor: '#cdcdcd',
@@ -180,8 +180,8 @@ export const stylesDark = StyleSheet.create({
         marginHorizontal: 1,
         padding: 10,
         flexDirection: 'row',
-        marginBottom: 30,
-        marginTop: 10
+        marginBottom: 15,
+        marginTop: 15
     },
     textInput: {
         borderColor: COLORS.lightText,

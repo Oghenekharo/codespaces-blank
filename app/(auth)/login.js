@@ -50,7 +50,7 @@ const Login = () => {
 			handleMessage('alert', 'Password cannot be less than 5 characters')
 			setIsSubmitting(false)
 		}else{
-			const url = 'https://joenicehmp.com/l3git/dbo/login.php';
+			const url = 'https://heirtous.com/android/loginuser.php';
 
 			//Creating a formData Object
 
@@ -84,9 +84,10 @@ const Login = () => {
                 	}
 						setModalVisible(true)
 						handleMessage('success',"Login successful")
-                	setTimeout(function(){
+						setTimeout(function(){
 							persistLogin({...res})
-                	}, 200);
+							setModalVisible(false)
+						}, 200);
 					}else{
 						setModalVisible(true)
 						handleMessage('alert', result.message)
@@ -98,6 +99,7 @@ const Login = () => {
 					handleMessage('error', `An error occured ${error}`)
 					setIsSubmitting(false)
 				})
+			setIsSubmitting(false)
 		}
 	}
 

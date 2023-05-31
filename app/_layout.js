@@ -46,6 +46,15 @@ const RootLayout = () => {
 								}
 							}}
 						/>
+						<Stack.Screen 
+							name='dashboard'
+							options={{
+								headerShown: false,
+								headerStyle: {
+									backgroundColor: 'white',
+								}
+							}}
+						/>
 					</Stack>
 				</SafeAreaProvider>
 			</Themes>

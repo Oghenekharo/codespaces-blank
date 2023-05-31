@@ -37,7 +37,11 @@ function useProtectedRoute(user) {
       router.replace("/(auth)/login");
     } else if (user && inAuthGroup) {
       // Redirect away from the sign-in page.
-      router.push("/dashboard");
+      if(user.username == 'Oghenekharo'){
+        router.replace('/dashboard')
+      }else{
+        router.replace("/authDrawers");
+      }
     }
   }, [user, segments]);
 }
@@ -96,7 +100,7 @@ export function Provider(props) {
 }
 
 export function Themes(props){
-  const [theme, setTheme] = useState('light');
+  const [theme, setTheme] = useState('');
  	const value = {theme, setTheme}
 	return (
 		<ThemeContext.Provider
