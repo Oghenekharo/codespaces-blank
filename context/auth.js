@@ -37,8 +37,8 @@ function useProtectedRoute(user) {
       router.replace("/(auth)/login");
     } else if (user && inAuthGroup) {
       // Redirect away from the sign-in page.
-      if(user.username == 'Oghenekharo'){
-        router.replace('/dashboard')
+      if(user.userstatus == 1){
+        router.push('/dashboard')
       }else{
         router.replace("/authDrawers");
       }

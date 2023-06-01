@@ -6,6 +6,7 @@ import { stylesLight, stylesDark} from '../../assets/styles/dashStyle'
 import { COLORS } from '../../assets/constants/constants'
 import { Drawer } from 'expo-router/drawer';
 import Tabs from '../../assets/components/tabs';
+import AudioPlayer from '../../assets/components/audio'
 
 const tabs = ["radio", "tv"];
 
@@ -20,16 +21,14 @@ const Dashboard = () => {
     switch(activeTab) {
         case "radio":
           return (
-            <View>
-					<Text>Hello Radio</Text>
-				</View>
+            <AudioPlayer />
           )
           break;
         case "tv":
           return (
             <View>
-					<Text>Hello Tv</Text>
-				</View>
+				<Text>Hello Tv</Text>
+			</View>
           )
           break;
         default: 
@@ -84,13 +83,16 @@ const Dashboard = () => {
 						</TouchableOpacity>
 					</View>
 				</View>
+				<View></View>
 				<View style={theme == 'light' ? stylesLight.container : stylesDark.container}>
 					<Tabs 
                   tabs={tabs}
                   activeTab={activeTab}
                   setActiveTab={setActiveTab}
-                />  
-					 {displayTabContent()}
+                /> 
+				</View>
+				<View>
+					{displayTabContent()}
 				</View>
 			</SafeAreaView>
 		</ScrollView>

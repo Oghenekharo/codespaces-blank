@@ -11,8 +11,9 @@ export const stylesLight = StyleSheet.create({
         fontFamily: 'DMMedium'
     },
     container: {
-        justifyContent: 'center',
-        alignItems: 'center'
+      marginVertical: 10,
+      justifyContent: 'center',
+      alignItems: 'center'
     },
     header: {
         fontSize: 25,
@@ -56,8 +57,9 @@ export const stylesDark = StyleSheet.create({
     fontFamily: 'DMMedium'
   },
     container: {
-        justifyContent: 'center',
-        alignItems: 'center'
+      marginVertical: 10,
+      justifyContent: 'center',
+      alignItems: 'center'
     },
     header: {
         fontSize: 25,

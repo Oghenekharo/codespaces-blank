@@ -14,5 +14,8 @@ export const COLORS = {
     lightText: '#b1b2bb',
     gray: '#808080',
     dimgray: '#696969',
+    lightgray: '#efefef',
+    silver: '#C0C0C0',
+    darkgray: '#5A5A5A'
 }
 

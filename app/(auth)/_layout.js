@@ -9,7 +9,6 @@ const {theme} = useThemeContext();
   return ( 
 		<Tabs screenOptions={{
 			headerShown: false,
-			headerTitle: 'Test',
 			tabBarLabelStyle: {
 				fontFamily: 'DMRegular',
 			},
