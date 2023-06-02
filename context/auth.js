@@ -100,7 +100,7 @@ export function Provider(props) {
 }
 
 export function Themes(props){
-  const [theme, setTheme] = useState('');
+  const [theme, setTheme] = useState('light');
  	const value = {theme, setTheme}
 	return (
 		<ThemeContext.Provider

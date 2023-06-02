@@ -116,7 +116,7 @@ const Login = () => {
       	})
    }
 
-	if(credentials != null) {
+	if(credentials !== null) {
 		return <ActivityIndicator size="large" color={theme == 'light' ? COLORS.dark : COLORS.white} />
 	}else{
 		return (

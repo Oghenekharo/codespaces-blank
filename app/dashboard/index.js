@@ -7,6 +7,7 @@ import { COLORS } from '../../assets/constants/constants'
 import { Drawer } from 'expo-router/drawer';
 import Tabs from '../../assets/components/tabs';
 import AudioPlayer from '../../assets/components/audio'
+import VideoPlayer from '../../assets/components/video'
 
 const tabs = ["radio", "tv"];
 
@@ -18,26 +19,22 @@ const Dashboard = () => {
 	const {username} = credentials;
 
 	const displayTabContent = () => {
-    switch(activeTab) {
-        case "radio":
-          return (
-            <AudioPlayer />
-          )
-          break;
-        case "tv":
-          return (
-            <View>
-				<Text>Hello Tv</Text>
-			</View>
-          )
-          break;
-        default: 
-          return (
-            <View>
-					<Text>Hello Radio</Text>
-				</View>
-          )
-        break;
+    	switch(activeTab) {
+        	case "radio":
+         	return (
+            	<AudioPlayer />
+          	)
+         break;
+        	case "tv":
+         	return (
+            	<VideoPlayer />
+          	)
+         break;
+        	default: 
+         	return (
+					<AudioPlayer />
+				)
+        	break;
       }
   }
 	return (
