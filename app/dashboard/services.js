@@ -113,7 +113,7 @@ const Details = ({item}) => {
 					</View>
 				</View>
 				<View>
-					<TouchableOpacity onPress={() => router.push({pathname: `./service/${item.u_id}`, params: {item}})}>
+					<TouchableOpacity onPress={() => router.push({pathname: `./service/${item.u_id}`, params: {u_id: item.u_id}})}>
 						<Entypo name="chevron-right" color={COLORS.white} size={25} />
 					</TouchableOpacity>
 				</View>

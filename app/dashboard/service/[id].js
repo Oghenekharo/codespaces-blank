@@ -3,25 +3,25 @@ import {View, Text, TouchableOpacity, ScrollView, ActivityIndicator, SafeAreaVie
 import { Stack, useRouter, useSearchParams } from 'expo-router'
 import { useThemeContext, useAuth } from "../../../context/auth";
 import { COLORS } from '../../../assets/constants/constants'
-import { Ionicons} from '@expo/vector-icons';
+import { Ionicons, FontAwesome} from '@expo/vector-icons';
 import { Drawer } from 'expo-router/drawer'
 import axios from 'axios';
 import { stylesLight } from './serviceStyle';
 
-const photosarr = []
+
 
 const Service = () => {
-    const [refreshing, setRefreshing] = useState(false);
-    const [service, setService] = useState()
-	 const [comments, setComments] = useState()
-	 const [cstat, setCStat] = useState(0)
-    const params = useSearchParams();
-    const router = useRouter()
-    const {theme} = useThemeContext()
-	 const {credentials} = useAuth()
-	 const {user_id} = credentials
+   const [refreshing, setRefreshing] = useState(false);
+   const [service, setService] = useState()
+	const [comments, setComments] = useState()
+	const [cstat, setCStat] = useState(0)
+   const params = useSearchParams();
+   const router = useRouter()
+   const {theme} = useThemeContext()
+	const {credentials} = useAuth()
+	const {user_id} = credentials
     
-    const fetchService = () => {
+   const fetchService = () => {
 		const url = 'https://heirtous.com/android/services.php';
 		let formData = new FormData();
 		
@@ -40,8 +40,6 @@ const Service = () => {
 				setService(result.data.response)
 				setComments(result.data.comment)
 				setCStat(result.data.c_status)
-				photosarr[0] = result.data.response[0].u_photo1;
-				photosarr[1] = result.data.response[0].u_photo2;
 				// console.log(photosarr)
 			}else{
 				console.log(result.data.response)
@@ -54,7 +52,7 @@ const Service = () => {
 
 	useEffect(() => {
 		fetchService()
-	}, [])
+	}, [params.u_id])
   	return (
 		<ScrollView
 			showsVerticalScrollIndicator={false} 
@@ -95,9 +93,9 @@ const Service = () => {
 				/>
 				<View style={{padding: 10}}>
 					<Text style={{fontFamily: 'DMBold', fontSize: 16}}>Service Details</Text>
-					<View style={{width: '100%', height: 300, marginTop: 10}}>
-						{photosarr && <FlatList
-							data={photosarr}
+					<View style={{width: '100%', marginTop: 10}}>
+						{service && <FlatList
+							data={[service[0].u_photo1,service[0].u_photo2]}
 							renderItem={({ item }) => (
 								<ImagesList photoitem={item} />
 							)}
@@ -105,6 +103,33 @@ const Service = () => {
 							contentContainerStyle={{ columnGap: 3 }}
 							horizontal
 						/>}
+					</View>
+					<View style={{margin: 10}}>
+					<View style={{marginBottom: 15}}>
+							<Text style={{fontFamily: 'DMMedium', fontSize: 18}}>Posted by:</Text>
+							<Text style={{fontFamily: 'DMRegular', fontSize: 14}}>{service[0].u_user} {service[0].verified == 1 ? <FontAwesome name='check-circle' color={COLORS.dark} size={15}  /> : ''}</Text>
+						</View>
+						<View style={{marginBottom: 15}}>
+							<Text style={{fontFamily: 'DMMedium', fontSize: 18}}>Service:</Text>
+							<Text style={{fontFamily: 'DMRegular', fontSize: 14}}>{service[0].u_name}</Text>
+						</View>
+						<View style={{marginBottom: 15}}>
+							<Text style={{fontFamily: 'DMMedium', fontSize: 18}}>Location:</Text>
+							<Text style={{fontFamily: 'DMRegular', fontSize: 14}}>{service[0].u_location}</Text>
+						</View>
+						<View style={{marginBottom: 15}}>
+							<Text style={{fontFamily: 'DMMedium', fontSize: 18}}>Church:</Text>
+							<Text style={{fontFamily: 'DMRegular', fontSize: 14}}>{service[0].u_church}</Text>
+						</View>
+						<View style={{marginBottom: 15}}>
+							<Text style={{fontFamily: 'DMMedium', fontSize: 18}}>Contact:</Text>
+							<Text style={{fontFamily: 'DMRegular', fontSize: 14}}>{service[0].u_contacts}</Text>
+							<Text style={{fontFamily: 'DMRegular', fontSize: 14}}>{service[0].u_email}</Text>
+						</View>
+						<View style={{marginBottom: 15}}>
+							<Text style={{fontFamily: 'DMMedium', fontSize: 18}}>Description:</Text>
+							<Text style={{fontFamily: 'DMRegular', fontSize: 14}}>{service[0].u_desc}</Text>
+						</View>
 					</View>
 				</View>
 				{/* <Comment comments={comments} /> */}
@@ -115,7 +140,7 @@ const Service = () => {
 
 const ImagesList = ({photoitem}) => {
 	return (
-		<View style={{backgroundColor: '#000', height: '100%', width: '100%'}}>
+		<View style={{height: 250, width: 330}}>
 			<Image 
 				source={{uri: `https://heirtous.com/assets/images/uploads/${photoitem}`}}
 				resizeMode='contain'
