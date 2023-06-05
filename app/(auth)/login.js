@@ -117,7 +117,11 @@ const Login = () => {
    }
 
 	if(credentials !== null) {
-		return <ActivityIndicator size="large" color={theme == 'light' ? COLORS.dark : COLORS.white} />
+		return (
+			<View style={{flex: 1, height: 900, justifyContent: 'center', alignItems: 'center', backgroundColor: theme == 'light' ? COLORS.white : COLORS.dark}}>
+				<ActivityIndicator size="large" color={theme == 'light' ? COLORS.dark : COLORS.white} />
+			</View>
+		)
 	}else{
 		return (
 			<ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>

@@ -1,18 +1,17 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import { View, Text, ScrollView, SafeAreaView, TouchableOpacity, StatusBar, TextInput, RefreshControl } from 'react-native'
-import { useThemeContext, useAuth } from "../../context/auth";
+import { View, Text, ScrollView, SafeAreaView, TouchableOpacity, StatusBar, TextInput, RefreshControl, Image } from 'react-native'
+import { useThemeContext } from "../../context/auth";
 import { stylesLight, stylesDark} from '../../assets/styles/dashStyle'
 import { COLORS } from '../../assets/constants/constants'
-import { Ionicons, MaterialCommunityIcons, MaterialIcons, Entypo} from '@expo/vector-icons';
+import { Ionicons, FontAwesome, MaterialIcons, Entypo} from '@expo/vector-icons';
 import { Drawer } from 'expo-router/drawer';
 import { useRouter } from 'expo-router';
 
 const Services = () => {
 	const [refreshing, setRefreshing] = useState(false);
 	const [services, setServices] = useState()
-	const {credentials} = useAuth();
-	const {theme, setTheme} = useThemeContext()
+	const {theme} = useThemeContext()
 	const router = useRouter()
 	const fetchServices = () => {
 		const url = 'https://heirtous.com/android/services.php';
@@ -34,6 +33,9 @@ const Services = () => {
 			console.log(error)
 		})	
 	}
+	useEffect(() => {
+		fetchServices()
+	}, [])
 	return (
    	<ScrollView 
 			showsVerticalScrollIndicator={false} 
@@ -64,46 +66,59 @@ const Services = () => {
 				barStyle={theme == 'light' ? 'dark-content' : 'light-content'}
 			/>
 			<SafeAreaView style={theme == 'light' ? stylesLight.page : stylesDark.page}>
+			<View>
+				<Text style={{textAlign: 'left', fontFamily: 'DMMedium', fontSize: 18, color: theme == 'light' ? COLORS.darkgray : COLORS.lightgray}}>Available services</Text>
+			</View>
 				<View style={{alignItems: 'center'}}>
-					<TouchableOpacity onPress={fetchServices} style={{backgroundColor: theme == 'light' ? COLORS.blue : COLORS.gray, padding: 10}}>
+					{/* <TouchableOpacity onPress={fetchServices} style={{backgroundColor: theme == 'light' ? COLORS.blue : COLORS.gray, padding: 10}}>
 						<Text style={{color: theme == 'light' ? COLORS.darkgray : COLORS.white}}>Services</Text>
-					</TouchableOpacity>
+					</TouchableOpacity> */}
 					<View>
 						{services && services.map((item, index) => (
-							<View style={{margin: 8, padding: 10}}>
-								<View style={{flexDirection: 'row', justifyContent: 'space-between', width: 300, borderRadius: 10, backgroundColor: COLORS.lighterblue, padding: 15}}>
-									<View>
-										<View style={{marginBottom: 2}}>
-											<Text style={{textAlign: 'left', fontFamily: 'DMRegular', fontSize: 12, color: COLORS.lightgray}}>{item.u_type}</Text>
-										</View>
-										<Text style={{fontFamily: 'DMBold', fontSize: 19, marginBottom: 3, color: COLORS.white}}>{item.u_name} </Text>
-										<View style={{flexDirection: 'row'}}>
-											<Entypo name="user" size={14} color="white" style={{paddingRight: 4}}  />
-											<Text style={{fontFamily: 'DMRegular', color: COLORS.white, paddingBottom: 5}}>{item.u_user}</Text>
-										</View>
-										<View style={{flexDirection: 'row'}}>
-											<Entypo name="location" size={14} color="white" style={{paddingRight: 4}} />
-											<Text style={{fontFamily: 'DMRegular', color: COLORS.white, paddingBottom: 5}}>{item.u_location}</Text>
-										</View>
-										<View style={{flexDirection: 'row'}}>
-											<MaterialIcons name="perm-phone-msg" size={14} color="white" style={{paddingRight: 4}} />
-											<Text style={{fontFamily: 'DMRegular', color: COLORS.white, paddingBottom: 5}}>{item.u_contacts}</Text>
-										</View>
-										<View style={{flexDirection: 'row'}}>
-											<MaterialCommunityIcons name="church" size={14} color="white" style={{paddingRight: 4}} />
-											<Text style={{fontFamily: 'DMRegular', color: COLORS.white, paddingBottom: 5}}>{item.u_church}</Text>
-										</View>
-									</View>
-									<View>
-										<Text>View</Text>
-									</View>
-								</View>
-							</View>
+							<Details item={item} key={index} />
 						))}
 					</View>
 				</View>
 			</SafeAreaView>
 		</ScrollView>
+	)
+}
+
+const Details = ({item}) => {
+	const {theme} = useThemeContext()
+	const router = useRouter()
+	return (
+		<View style={{marginHorizontal: 20, padding: 10}}>
+			<View style={theme == 'light' ? stylesLight.serviceContainer : stylesDark.serviceContainer}>
+				<View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+					<Image
+						source={{
+							uri: `https://heirtous.com/assets/images/uploads/${item.u_photo1}`
+						}}
+						resizeMode="contain"
+						style={theme == 'light' ? stylesLight.serviceImg : stylesDark.serviceImg}
+					/>
+					<View style={{paddingLeft: 10}}>
+						<View style={{marginBottom: 2}}>
+							<Text style={theme == 'light' ? stylesLight.serviceType : stylesDark.serviceType}>{item.u_type}</Text>
+						</View>
+						<Text style={theme == 'light' ? stylesLight.serviceName : stylesDark.serviceName}>{item.u_name} </Text>
+						<View style={{}}>
+							<Text style={[theme == 'light' ? stylesLight.serviceText : stylesDark.serviceText, {fontSize: 9}]}>Posted by</Text>
+							<Text style={theme == 'light' ? stylesLight.serviceText : stylesDark.serviceText}>{item.u_user} {item.verified == 1 ? <FontAwesome name='check-circle' color={COLORS.white}  /> : <Entypo />}</Text>
+						</View>
+						<View style={{}}>
+							<Text style={theme == 'light' ? stylesLight.serviceText : stylesDark.serviceText}>{item.u_location}</Text>
+						</View>
+					</View>
+				</View>
+				<View>
+					<TouchableOpacity onPress={() => router.push({pathname: `./service/${item.u_id}`, params: {item}})}>
+						<Entypo name="chevron-right" color={COLORS.white} size={25} />
+					</TouchableOpacity>
+				</View>
+			</View>
+		</View>
 	)
 }
 

@@ -23,7 +23,8 @@ const Drawers = () => {
             >
             <Image source={
               photo == null ? require('../images/avatar.png') : {uri: `https://heirtous.com/assets/images/users/${photo}`}
-            } resizeMode="contain" style={{width: 120, height: 120, borderRadius: 200 / 2, marginBottom: 20}} />
+            } resizeMode="contain" style={{width: 120, height: 120, borderRadius: 200 / 2, marginBottom: 20, borderColor: theme == 'light' ? COLORS.darkgray : COLORS.lightgray,
+												borderWidth: 2}} />
             <Text style={theme == 'light' ? stylesLight.headerName : stylesDark.headerName}>{fullname}</Text>
             </View>
             
