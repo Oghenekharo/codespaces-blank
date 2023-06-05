@@ -86,9 +86,10 @@ const Login = () => {
                 	}
 						setModalVisible(true)
 						handleMessage('success',"Login successful")
-                	setTimeout(function(){
-							persistLogin(res)
-                	}, 200);
+						setTimeout(function(){
+							persistLogin({...res})
+							setModalVisible(false)
+						}, 200);
 					}else{
 						setModalVisible(true)
 						handleMessage('alert', result.response)
@@ -104,119 +105,127 @@ const Login = () => {
 		}
 	}
 
-	const persistLogin = (res) => {
+	const persistLogin = (credentials) => {
       AsyncStorage
-      	.setItem('Heirtous', JSON.stringify(res))
+      	.setItem('Heirtous', JSON.stringify(credentials))
       	.then((result) => {
-      		setCredentials(credentials)
+      		setCredentials(credentials);
       	})
         .catch((error) => {
             console.log(error)
       	})
    }
 
-  	return (
-   	<ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
-			<SafeAreaView style={theme == 'light' ? stylesLight.page : stylesDark.page}>
-				<StatusBar 
-					barStyle={theme == 'light' ? 'dark-content' : 'light-content'}
-				/>
-				<View style={{alignItems: 'center'}}>
-					<Toggler />
-					<View style={{margin: 10}}>
-						{
-							theme == 'light' ?
-							<Fontisto  name='day-sunny' color={COLORS.dark} size={20} />
-							:
-							<MaterialIcons name='nightlight-round' color={COLORS.white} size={20} />
-						}
-					</View>
-				</View>
-				
-				<View style={{margin: 10, paddingLeft: 30, marginTop: 50}}>
-					<Text style={[{fontSize: 25, fontFamily: 'DMBold'}, theme == 'light' ? stylesLight.darkText : stylesDark.lightText]}>Welcome Back</Text>
-					<Text style={[{fontSize: 15, fontWeight: 'light', marginTop: 10, fontFamily: 'DMRegular'}, theme == 'light' ? stylesLight.darkText : stylesDark.lightText]}>Login to continue</Text>
-				</View>
-				<View>
-					<View style={theme == 'light' ? stylesLight.container : stylesDark.container}>
-						<View style={theme == 'light' ? stylesLight.textInputContainer : stylesDark.textInputContainer }>
-							<Text style={theme == 'light' ? stylesLight.headerText : stylesDark.headerText}>Login</Text>
-							<View style={theme == 'light' ? stylesLight.inputContainer : stylesDark.inputContainer}>
-								<View style={theme == 'light' ? stylesLight.leftIcon : stylesDark.leftIcon}>
-									<Entypo name="user" color={theme == 'light' ? COLORS.dimgray : COLORS.white} size={20} />
-								</View>
-								<TextInput
-									style={theme == 'light' ? stylesLight.textInput : stylesDark.textInput}
-									placeholderTextColor={theme == 'light' ? COLORS.dimgray : COLORS.white}
-									placeholder='Username'
-									value={username}
-									onChangeText={(text) => setUsername(text)}
-								/>
-							</View>
-							<View style={theme == 'light' ? stylesLight.inputContainer : stylesDark.inputContainer}>
-								<View style={theme == 'light' ? stylesLight.leftIcon : stylesDark.leftIcon}>
-									<Entypo name="lock" color={theme == 'light' ? COLORS.dimgray : COLORS.white} size={20} />
-								</View>
-								<TextInput
-									style={theme == 'light' ? stylesLight.textInput : stylesDark.textInput}
-									placeholderTextColor={theme == 'light' ? COLORS.dimgray : COLORS.white}
-									placeholder='Password'
-									secureTextEntry={isPassword}
-									value={password}
-									onChangeText={(text) => setPassword(text)}
-								/>
-								<TouchableOpacity onPress={() => setIsPassword(!isPassword)} style={stylesLight.rightIcon}>
-									<Entypo name={isPassword == true ? 'eye' : 'eye-with-line'} color={theme == 'light' ? COLORS.dimgray : COLORS.white} size={25} />
-								</TouchableOpacity>
-							</View>
-							<Link style={theme == 'light' ? stylesLight.linkText : stylesDark.linkText} href="/authDrawers/about">Forgot Password?</Link>
-							<View style={theme == 'light' ? stylesLight.inputContainer : stylesDark.inputContainer}>
-								<TouchableOpacity onPress={() => LoginUser()} style={theme == 'light' ? stylesLight.button : stylesDark.button}>
-									{isSubmitting == false 
-									? <Text style={theme == 'light' ? stylesLight.buttonText : stylesDark.buttonText}>Login</Text>
+	if(credentials !== null) {
+		return (
+			<View style={{flex: 1, height: 900, justifyContent: 'center', alignItems: 'center', backgroundColor: theme == 'light' ? COLORS.white : COLORS.dark}}>
+				<ActivityIndicator size="large" color={theme == 'light' ? COLORS.dark : COLORS.white} />
+			</View>
+		)
+	}else{
+		return (
+			<ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
+					<SafeAreaView style={theme == 'light' ? stylesLight.page : stylesDark.page}>
+						<StatusBar 
+							barStyle={theme == 'light' ? 'dark-content' : 'light-content'}
+						/>
+						<View style={{alignItems: 'center'}}>
+							<Toggler />
+							<View style={{margin: 10}}>
+								{
+									theme == 'light' ?
+									<Fontisto  name='day-sunny' color={COLORS.dark} size={20} />
 									:
-									<ActivityIndicator size="large" color={theme == 'light' ? COLORS.white : COLORS.blue} />
-									}
-								</TouchableOpacity>
+									<MaterialIcons name='nightlight-round' color={COLORS.white} size={20} />
+								}
 							</View>
 						</View>
-					</View>
-					<View style={{margin: 10, padding: 40, alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row'}}>
-						<View style={{}}>
-							<TouchableOpacity onPress={() => router.push('/authDrawers/about')}>
-								<View style={theme == 'light' ? stylesLight.circleLinks : stylesDark.circleLinks}>
-									<Entypo name='info' color={theme == 'light' ? COLORS.white : COLORS.dark} size={20} />
-								</View>
-								<Text style={theme == 'light' ? stylesLight.circleLinksText : stylesDark.circleLinksText}>About</Text>
-							</TouchableOpacity>
+						
+						<View style={{margin: 10, paddingLeft: 30, marginTop: 50}}>
+							<Text style={[{fontSize: 25, fontFamily: 'DMBold'}, theme == 'light' ? stylesLight.darkText : stylesDark.lightText]}>Welcome Back</Text>
+							<Text style={[{fontSize: 15, fontWeight: 'light', marginTop: 10, fontFamily: 'DMRegular'}, theme == 'light' ? stylesLight.darkText : stylesDark.lightText]}>Login to continue</Text>
 						</View>
-						<View style={{}}>
-							<TouchableOpacity onPress={() => router.push('/authDrawers/contact')}>
-								<View style={theme == 'light' ? stylesLight.circleLinks : stylesDark.circleLinks}>
-									<Entypo name='phone' color={theme == 'light' ? COLORS.white : COLORS.dark} size={20} />
+						<View>
+							<View style={theme == 'light' ? stylesLight.container : stylesDark.container}>
+								<View style={theme == 'light' ? stylesLight.textInputContainer : stylesDark.textInputContainer }>
+									<Text style={theme == 'light' ? stylesLight.headerText : stylesDark.headerText}>Login</Text>
+									<View style={theme == 'light' ? stylesLight.inputContainer : stylesDark.inputContainer}>
+										<View style={theme == 'light' ? stylesLight.leftIcon : stylesDark.leftIcon}>
+											<Entypo name="user" color={theme == 'light' ? COLORS.dimgray : COLORS.white} size={20} />
+										</View>
+										<TextInput
+											style={theme == 'light' ? stylesLight.textInput : stylesDark.textInput}
+											placeholderTextColor={theme == 'light' ? COLORS.dimgray : COLORS.white}
+											placeholder='Username'
+											value={username}
+											onChangeText={(text) => setUsername(text)}
+										/>
+									</View>
+									<View style={theme == 'light' ? stylesLight.inputContainer : stylesDark.inputContainer}>
+										<View style={theme == 'light' ? stylesLight.leftIcon : stylesDark.leftIcon}>
+											<Entypo name="lock" color={theme == 'light' ? COLORS.dimgray : COLORS.white} size={20} />
+										</View>
+										<TextInput
+											style={theme == 'light' ? stylesLight.textInput : stylesDark.textInput}
+											placeholderTextColor={theme == 'light' ? COLORS.dimgray : COLORS.white}
+											placeholder='Password'
+											secureTextEntry={isPassword}
+											value={password}
+											onChangeText={(text) => setPassword(text)}
+										/>
+										<TouchableOpacity onPress={() => setIsPassword(!isPassword)} style={stylesLight.rightIcon}>
+											<Entypo name={isPassword == true ? 'eye' : 'eye-with-line'} color={theme == 'light' ? COLORS.dimgray : COLORS.white} size={25} />
+										</TouchableOpacity>
+									</View>
+									<Link style={theme == 'light' ? stylesLight.linkText : stylesDark.linkText} href="/authDrawers/about">Forgot Password?</Link>
+									<View style={theme == 'light' ? stylesLight.inputContainer : stylesDark.inputContainer}>
+										<TouchableOpacity onPress={() => LoginUser()} style={theme == 'light' ? stylesLight.button : stylesDark.button}>
+											{isSubmitting == false 
+											? <Text style={theme == 'light' ? stylesLight.buttonText : stylesDark.buttonText}>Login</Text>
+											:
+											<ActivityIndicator size="small" color={theme == 'light' ? COLORS.white : COLORS.blue} />
+											}
+										</TouchableOpacity>
+									</View>
 								</View>
-								<Text style={theme == 'light' ? stylesLight.circleLinksText : stylesDark.circleLinksText}>Contact</Text>
-							</TouchableOpacity>
-						</View>
-						<View style={{}}>
-							<TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
-								<View style={theme == 'light' ? stylesLight.circleLinks : stylesDark.circleLinks}>
-									<Foundation name='comments' color={theme == 'light' ? COLORS.white : COLORS.dark} size={20} />
+							</View>
+							<View style={{margin: 10, padding: 40, alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row'}}>
+								<View style={{}}>
+									<TouchableOpacity onPress={() => router.push('/authDrawers/about')}>
+										<View style={theme == 'light' ? stylesLight.circleLinks : stylesDark.circleLinks}>
+											<Entypo name='info' color={theme == 'light' ? COLORS.white : COLORS.dark} size={20} />
+										</View>
+										<Text style={theme == 'light' ? stylesLight.circleLinksText : stylesDark.circleLinksText}>About</Text>
+									</TouchableOpacity>
 								</View>
-								<Text style={theme == 'light' ? stylesLight.circleLinksText : stylesDark.circleLinksText}>Requests</Text>
-							</TouchableOpacity>
+								<View style={{}}>
+									<TouchableOpacity onPress={() => router.push('/authDrawers/contact')}>
+										<View style={theme == 'light' ? stylesLight.circleLinks : stylesDark.circleLinks}>
+											<Entypo name='phone' color={theme == 'light' ? COLORS.white : COLORS.dark} size={20} />
+										</View>
+										<Text style={theme == 'light' ? stylesLight.circleLinksText : stylesDark.circleLinksText}>Contact</Text>
+									</TouchableOpacity>
+								</View>
+								<View style={{}}>
+									<TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
+										<View style={theme == 'light' ? stylesLight.circleLinks : stylesDark.circleLinks}>
+											<Foundation name='comments' color={theme == 'light' ? COLORS.white : COLORS.dark} size={20} />
+										</View>
+										<Text style={theme == 'light' ? stylesLight.circleLinksText : stylesDark.circleLinksText}>Requests</Text>
+									</TouchableOpacity>
+								</View>
+							</View>
 						</View>
-					</View>
-				</View>
-			</SafeAreaView>
-			<MyModal 
-				message={message}
-				visible={modalVisible} 
-				setModalVisible={setModalVisible}
-				type={messageType}
-			/>
-		</ScrollView>
-  )
+					</SafeAreaView>
+					<MyModal 
+						message={message}
+						visible={modalVisible} 
+						setModalVisible={setModalVisible}
+						type={messageType}
+					/>
+				</ScrollView>
+		)
+	}
 }
 
 export default Login
