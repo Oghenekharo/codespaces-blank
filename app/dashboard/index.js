@@ -1,42 +1,14 @@
-import React, { useState } from 'react'
-import {View, Text, ScrollView, SafeAreaView, TouchableOpacity, StatusBar, TextInput, RefreshControl} from 'react-native'
-import { Entypo, Feather, Fontisto, Foundation, FontAwesome5 } from '@expo/vector-icons';
+import React from 'react'
+import {View, Text, ScrollView, SafeAreaView, TouchableOpacity} from 'react-native'
+import {Stack} from 'expo-router'
 import { useThemeContext, useAuth } from "../../context/auth";
-import { stylesLight, stylesDark} from '../../assets/styles/dashStyle'
-import { COLORS } from '../../assets/constants/constants'
-import { Drawer } from 'expo-router/drawer';
-import Tabs from '../../assets/components/tabs';
-import AudioPlayer from '../../assets/components/audio'
-import VideoPlayer from '../../assets/components/video'
-
-const tabs = ["radio", "tv"];
+import { stylesLight, stylesDark} from '../../assets/styles/authStyle'
 
 const Dashboard = () => {
-	const [refreshing, setRefreshing] = useState(false);
 	const {credentials, clearCredentials} = useAuth();
-	const [activeTab, setActiveTab] = useState(tabs[0]);
-	const {theme, setTheme} = useThemeContext()
-	const {username} = credentials;
-
-	const displayTabContent = () => {
-    	switch(activeTab) {
-        	case "radio":
-         	return (
-            	<AudioPlayer />
-          	)
-         break;
-        	case "tv":
-         	return (
-            	<VideoPlayer />
-          	)
-         break;
-        	default: 
-         	return (
-					<AudioPlayer />
-				)
-        	break;
-      }
-  }
+	const {theme} = useThemeContext()
+	const {username} = credentials
+	console.log(theme)
 	return (
 		<ScrollView 
 			showsVerticalScrollIndicator={false} 
@@ -67,16 +39,11 @@ const Dashboard = () => {
 				barStyle={theme == 'light' ? 'dark-content' : 'light-content'}
 			/>
 			<SafeAreaView style={theme == 'light' ? stylesLight.page : stylesDark.page}>
-				<Text style={theme == 'light' ? stylesLight.header : stylesDark.header}>Welcome {username}</Text>
-				<View style={theme == 'light' ? stylesLight.searchCover : stylesDark.searchCover}>
-					<View style={theme == 'light' ? stylesLight.searchContainer : stylesDark.searchContainer}>
-						<TextInput
-							style={theme == 'light' ? stylesLight.textInput : stylesDark.textInput}
-							placeholderTextColor={theme == 'light' ? COLORS.dimgray : COLORS.white}
-							placeholder='Search community'
-						/>
-						<TouchableOpacity style={theme == 'light' ? stylesLight.searchBtn : stylesDark.searchBtn}>
-							<Feather name="search" color={theme == 'light' ? COLORS.white : COLORS.lightText } size={20} />
+				<View style={theme == 'light' ? stylesLight.container : stylesDark.container}>
+					<View style={theme == 'light' ? stylesLight.textInputContainer : stylesDark.textInputContainer }>
+						<Text>Helo {username}</Text>
+						<TouchableOpacity onPress={() => clearCredentials} style={stylesDark.button}>
+							<Text>Logout</Text>
 						</TouchableOpacity>
 					</View>
 				</View>

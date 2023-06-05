@@ -1,11 +1,12 @@
 import React from 'react'
 import { Tabs } from 'expo-router'
 import { Entypo } from '@expo/vector-icons';
-import { useThemeContext } from "../../context/auth";
+import { useThemeContext, useAuth } from "../../context/auth";
 import {COLORS, SITE_NAME} from '../../assets/constants/constants'
 
 const Layout = () => {
 const {theme} = useThemeContext();
+// const {credentials} = useAuth()
   return ( 
 		<Tabs screenOptions={{
 			headerShown: false,
