@@ -174,7 +174,15 @@ export const stylesDark = StyleSheet.create({
         width: '90%',
         backgroundColor: COLORS.lighter,
         borderRadius: 10,
-        padding: 30
+        padding: 30,
+        shadowColor: '#000',
+        shadowOffset: {
+		    width: 0,
+			height: 2,
+		},
+		shadowOpacity: 0.25,
+		shadowRadius: 4,
+		elevation: 5,
     },
     inputContainer: {
         marginHorizontal: 1,
@@ -245,7 +253,7 @@ export const stylesDark = StyleSheet.create({
         textAlign: 'center',
         fontFamily: 'DMRegular',
     },
-	 modalCenter: {
+	modalCenter: {
 		flex: 1, 
 		justifyContent: 'center', 
 		alignItems: 'center',

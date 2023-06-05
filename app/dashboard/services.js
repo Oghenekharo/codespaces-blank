@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import { View, Text, ScrollView, SafeAreaView, TouchableOpacity, StatusBar, TextInput, RefreshControl, Image } from 'react-native'
+import { View, Text, ScrollView, SafeAreaView, TouchableOpacity, StatusBar, TextInput, RefreshControl, Image, ActivityIndicator } from 'react-native'
 import { useThemeContext } from "../../context/auth";
 import { stylesLight, stylesDark} from '../../assets/styles/dashStyle'
 import { COLORS } from '../../assets/constants/constants'
@@ -70,11 +70,13 @@ const Services = () => {
 				<Text style={{textAlign: 'left', fontFamily: 'DMMedium', fontSize: 18, color: theme == 'light' ? COLORS.darkgray : COLORS.lightgray}}>Available services</Text>
 			</View>
 				<View style={{alignItems: 'center'}}>
-					{/* <TouchableOpacity onPress={fetchServices} style={{backgroundColor: theme == 'light' ? COLORS.blue : COLORS.gray, padding: 10}}>
-						<Text style={{color: theme == 'light' ? COLORS.darkgray : COLORS.white}}>Services</Text>
-					</TouchableOpacity> */}
 					<View>
-						{services && services.map((item, index) => (
+						{services == null || services == undefined ? 
+						<View style={{flex: 5, height: 900, justifyContent: 'center', alignItems: 'center', backgroundColor: theme == 'light' ? COLORS.white : COLORS.dark}}>
+							<ActivityIndicator size="large" color={theme == 'light' ? COLORS.dark : COLORS.white} />
+						</View>
+						:
+						services.map((item, index) => (
 							<Details item={item} key={index} />
 						))}
 					</View>
