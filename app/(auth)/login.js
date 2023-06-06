@@ -50,7 +50,7 @@ const Login = () => {
 			handleMessage('alert', 'Password cannot be less than 5 characters')
 			setIsSubmitting(false)
 		}else{
-			const url = 'https://heirtous.com/android/loginuser.php';
+			const url = 'https://heirtous.com/api/loginuser';
 
 			//Creating a formData Object
 
@@ -179,7 +179,7 @@ const Login = () => {
 									</View>
 									<Link style={theme == 'light' ? stylesLight.linkText : stylesDark.linkText} href="/authDrawers/about">Forgot Password?</Link>
 									<View style={theme == 'light' ? stylesLight.inputContainer : stylesDark.inputContainer}>
-										<TouchableOpacity onPress={() => LoginUser()} style={theme == 'light' ? stylesLight.button : stylesDark.button}>
+										<TouchableOpacity disabled={isSubmitting} onPress={() => LoginUser()} style={theme == 'light' ? stylesLight.button : stylesDark.button}>
 											{isSubmitting == false 
 											? <Text style={theme == 'light' ? stylesLight.buttonText : stylesDark.buttonText}>Login</Text>
 											:

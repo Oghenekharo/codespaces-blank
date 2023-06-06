@@ -8,6 +8,7 @@ import { Drawer } from 'expo-router/drawer';
 import Tabs from '../../assets/components/tabs';
 import AudioPlayer from '../../assets/components/audio'
 import VideoPlayer from '../../assets/components/video'
+import SearchForm from '../../assets/components/searchForm';
 
 const tabs = ["radio", "tv"];
 
@@ -68,18 +69,7 @@ const Dashboard = () => {
 			/>
 			<SafeAreaView style={theme == 'light' ? stylesLight.page : stylesDark.page}>
 				<Text style={theme == 'light' ? stylesLight.header : stylesDark.header}>Welcome {username}</Text>
-				<View style={theme == 'light' ? stylesLight.searchCover : stylesDark.searchCover}>
-					<View style={theme == 'light' ? stylesLight.searchContainer : stylesDark.searchContainer}>
-						<TextInput
-							style={theme == 'light' ? stylesLight.textInput : stylesDark.textInput}
-							placeholderTextColor={theme == 'light' ? COLORS.dimgray : COLORS.white}
-							placeholder='Search community'
-						/>
-						<TouchableOpacity style={theme == 'light' ? stylesLight.searchBtn : stylesDark.searchBtn}>
-							<Feather name="search" color={theme == 'light' ? COLORS.white : COLORS.lightText } size={20} />
-						</TouchableOpacity>
-					</View>
-				</View>
+				<SearchForm query='services' />
 				<View></View>
 				<View style={theme == 'light' ? stylesLight.container : stylesDark.container}>
 					<Tabs 

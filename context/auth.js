@@ -8,7 +8,7 @@ const AuthContext = React.createContext({
   clearCredentials: () => {}
 });
 const ThemeContext = React.createContext({
-	theme: 'light',
+	theme: '',
 	setTheme: () => {}
 })
 
@@ -100,7 +100,7 @@ export function Provider(props) {
 }
 
 export function Themes(props){
-  const [theme, setTheme] = useState('light');
+  const [theme, setTheme] = useState('');
  	const value = {theme, setTheme}
 	return (
 		<ThemeContext.Provider

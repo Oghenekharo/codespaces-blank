@@ -6,12 +6,12 @@
     },
     "splash": {
       "image": "./assets/images/splash.png",
-      "resizeMode": "contain",
+      "resizeMode": "cover",
       "backgroundColor": "#fff"
     },
     "androidStatusBar": {
       "barStyle": "light-content",
-      "hidden": false,
+      "hidden": true,
       "translucent": false
     },
     "name": "Heirtous",

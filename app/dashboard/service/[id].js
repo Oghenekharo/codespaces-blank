@@ -13,20 +13,26 @@ import { stylesLight, stylesDark } from './serviceStyle';
 const Service = () => {
    const [refreshing, setRefreshing] = useState(false);
 
+	const [isSubmitting, setIsSubmitting] = useState(false);
+
+	const [message, setMessage] = useState('')
+
 	//Modal content visibility
 	const [modalVisible, setModalVisible] = useState(false);
 
    const [service, setService] = useState()
 	const [comments, setComments] = useState()
+	const [userComment, setUserComment] = useState('')
 	const [cstat, setCStat] = useState(0)
+	const [owner, setOwner] = useState('')
    const params = useSearchParams();
    const router = useRouter()
    const {theme} = useThemeContext()
 	const {credentials} = useAuth()
-	const {user_id} = credentials
+	const {user_id, username} = credentials
     
    const fetchService = () => {
-		const url = 'https://heirtous.com/android/services.php';
+		const url = 'https://heirtous.com/api/services';
 		let formData = new FormData();
 		
 		const config = {
@@ -39,11 +45,12 @@ const Service = () => {
 
 		axios
 		.post(url, formData, config)
-		.then((result) => {
+		.then(async (result) => {
 			if(result.data.status == 'success'){
 				setService(result.data.response)
 				setComments(result.data.comment)
 				setCStat(result.data.c_status)
+				setOwner(result.data.owner)
 				// console.log(photosarr)
 			}else{
 				console.log(result.data.response)
@@ -54,8 +61,50 @@ const Service = () => {
 		})	
 	}
 
+	const addComment = () => {
+		setIsSubmitting(true)
+		const url = 'https://heirtous.com/api/services';
+		let formData = new FormData();
+		
+		const config = {
+         headers: {'Content-Type': 'multipart/form-data'},
+      };
+		
+		formData.append('query', 'addcomment');
+		formData.append('username', username);
+		formData.append('user_id', user_id);
+		formData.append('uploadid', service[0].u_id);
+		formData.append('comment', userComment);
+
+		if(userComment == '' || userComment == null){
+			setMessage('Please enter a comment to add')
+			setIsSubmitting(false)
+		}else{
+			axios
+				.post(url, formData, config)
+				.then(async (response) => {
+					console.log(response.data)
+					if(response.data.status == 'success'){
+						setMessage(response.data.response)
+						setUserComment('')
+						fetchService()
+						setTimeout(() => {
+							setModalVisible(false)
+						}, 1000)
+					}else{
+						setMessage(response.data.response)
+					}
+				})
+				.catch((error) => {
+					setMessage(error)
+				})
+			setIsSubmitting(false)
+		}
+	}
+
 	useEffect(() => {
 		fetchService()
+		setIsSubmitting(false)
 	}, [params.u_id])
   	return (
 		<ScrollView
@@ -89,8 +138,8 @@ const Service = () => {
 						headerShown: true,
 						headerShadowVisible: true,
 						headerLeft: () => (
-							<TouchableOpacity style={{paddingLeft: 12}} onPress={() => router.push('../services')}>
-								<Ionicons name="arrow-back" color={theme == 'light' ? COLORS.black : COLORS.white } size={23} />
+							<TouchableOpacity style={{paddingLeft: 15}} onPress={() => router.push('../services')}>
+								<Ionicons name="arrow-back" color={theme == 'light' ? COLORS.black : COLORS.white } size={25} />
 							</TouchableOpacity>
 						)
 					}}
@@ -110,29 +159,29 @@ const Service = () => {
 					</View>
 					<View style={{margin: 10}}>
 						<View style={{marginBottom: 15}}>
-							<Text style={{fontFamily: 'DMMedium', fontSize: 18, color: theme == 'light' ? COLORS.dark : COLORS.lightgray}}>Posted by:</Text>
+							<Text style={{fontFamily: 'DMMedium', fontSize: 18, color: theme == 'light' ? COLORS.dark : COLORS.lightgray, paddingBottom: 3}}>Posted by:</Text>
 							<Text style={{fontFamily: 'DMRegular', fontSize: 14, color: theme == 'light' ? COLORS.dark : COLORS.lightgray}}>{service[0].u_user} {service[0].verified == 1 ? <FontAwesome name='check-circle' color={theme == 'light' ?  'green' : COLORS.lightgray} size={15}  /> : ''}</Text>
 						</View>
 						<View style={{marginBottom: 15}}>
-							<Text style={{fontFamily: 'DMMedium', fontSize: 18, color: theme == 'light' ? COLORS.dark : COLORS.lightgray}}>Service:</Text>
+							<Text style={{fontFamily: 'DMMedium', fontSize: 18, color: theme == 'light' ? COLORS.dark : COLORS.lightgray, paddingBottom: 3}}>Service:</Text>
 							<Text style={{fontFamily: 'DMRegular', fontSize: 14, color: theme == 'light' ? COLORS.dark : COLORS.lightgray}}>{service[0].u_name}</Text>
 						</View>
 						<View style={{marginBottom: 15}}>
-							<Text style={{fontFamily: 'DMMedium', fontSize: 18, color: theme == 'light' ? COLORS.dark : COLORS.lightgray}}>Location:</Text>
+							<Text style={{fontFamily: 'DMMedium', fontSize: 18, color: theme == 'light' ? COLORS.dark : COLORS.lightgray, paddingBottom: 3}}>Location:</Text>
 							<Text style={{fontFamily: 'DMRegular', fontSize: 14, color: theme == 'light' ? COLORS.dark : COLORS.lightgray}}>{service[0].u_location}</Text>
 						</View>
 						<View style={{marginBottom: 15}}>
-							<Text style={{fontFamily: 'DMMedium', fontSize: 18, color: theme == 'light' ? COLORS.dark : COLORS.lightgray}}>Church:</Text>
+							<Text style={{fontFamily: 'DMMedium', fontSize: 18, color: theme == 'light' ? COLORS.dark : COLORS.lightgray, paddingBottom: 3}}>Church:</Text>
 							<Text style={{fontFamily: 'DMRegular', fontSize: 14, color: theme == 'light' ? COLORS.dark : COLORS.lightgray}}>{service[0].u_church}</Text>
 						</View>
 						<View style={{marginBottom: 15}}>
-							<Text style={{fontFamily: 'DMMedium', fontSize: 18, color: theme == 'light' ? COLORS.dark : COLORS.lightgray}}>Contact:</Text>
-							<Text style={{fontFamily: 'DMRegular', fontSize: 14, color: theme == 'light' ? COLORS.dark : COLORS.lightgray}}>{service[0].u_contacts}</Text>
+							<Text style={{fontFamily: 'DMMedium', fontSize: 18, color: theme == 'light' ? COLORS.dark : COLORS.lightgray, paddingBottom: 3}}>Contact:</Text>
+							<Text style={{fontFamily: 'DMRegular', fontSize: 14, color: theme == 'light' ? COLORS.dark : COLORS.lightgray, paddingBottom: 3}}>{service[0].u_contacts}</Text>
 							<Text style={{fontFamily: 'DMRegular', fontSize: 14, color: theme == 'light' ? COLORS.dark : COLORS.lightgray}}>{service[0].u_email}</Text>
 						</View>
 						<View style={{marginBottom: 15}}>
-							<Text style={{fontFamily: 'DMMedium', fontSize: 18, color: theme == 'light' ? COLORS.dark : COLORS.lightgray}}>Description:</Text>
-							<Text style={{fontFamily: 'DMRegular', fontSize: 14, color: theme == 'light' ? COLORS.dark : COLORS.lightgray}}>{service[0].u_desc}</Text>
+							<Text style={{fontFamily: 'DMMedium', fontSize: 18, color: theme == 'light' ? COLORS.dark : COLORS.lightgray, paddingBottom: 3}}>Description:</Text>
+							<Text style={{fontFamily: 'DMRegular', fontSize: 14, color: theme == 'light' ? COLORS.dark : COLORS.lightgray, lineHeight: 25}}>{service[0].u_desc}</Text>
 						</View>
 					</View>
 					<View style={{margin: 10}}>
@@ -142,9 +191,11 @@ const Service = () => {
 								<View style={{borderBottomColor: theme == 'light' ? COLORS.dark : COLORS.lightgray, width: '50%', borderBottomWidth: 1, padding: 3}}></View>
 							</View>
 							<View style={{padding: 10}}>
+								{ owner == 'notsame' &&
 								<TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
 									<Text style={{fontFamily: 'DMMedium', color: theme == 'light' ? COLORS.gray : COLORS.lightgray}}>Add a comment</Text>
 								</TouchableOpacity>
+								}
 							</View>
 						</View>
 						<Comment comments={comments} count={cstat} />
@@ -183,15 +234,35 @@ const Service = () => {
 								<View style={theme == 'light' ? stylesLight.leftIcon : stylesDark.leftIcon}>
 									<FontAwesome name="comments" color={theme == 'light' ? COLORS.dimgray : COLORS.white} size={20} />
 								</View>
-								<TextInput 
+								<TextInput
+									value={userComment}
+									onChangeText={(text) => setUserComment(text)}
 									style={theme == 'light' ? stylesLight.textInput : stylesDark.textInput}
 									placeholder='Enter comment'
 									placeholderTextColor={theme == 'light' ? COLORS.silver : COLORS.lightgray}
 									numberOfLines={3} />
 							</View>
+							<View style={{padding: 10,}}>
+								{message && <Text 
+									style={
+										{
+											fontFamily: 'DMMedium', 
+											color: theme == 'light' ? COLORS.dark : COLORS.lightgray,
+											fontSize: 14,
+											textAlign: 'center'
+										}
+									}>{message}</Text>}
+							</View>
 							<View style={{alignItems: 'center', marginBottom: 20}}>
-								<TouchableOpacity style={theme == 'light' ? stylesLight.button : stylesDark.button}>
-									<Text style={theme == 'light' ? stylesLight.buttonText : stylesDark.buttonText}>Add Comment</Text>
+								<TouchableOpacity
+									disabled={isSubmitting}
+									onPress={() => addComment()}
+									style={theme == 'light' ? stylesLight.button : stylesDark.button}>
+									{isSubmitting == false 
+										? <Text style={theme == 'light' ? stylesLight.buttonText : stylesDark.buttonText}>Add Comment</Text>
+										:
+										<ActivityIndicator size="small" color={theme == 'light' ? COLORS.white : COLORS.blue} />
+										}
 								</TouchableOpacity>
 							</View>
 						</View>
@@ -205,7 +276,7 @@ const Service = () => {
 
 const ImagesList = ({photoitem}) => {
 	return (
-		<View style={{height: 250, width: 330}}>
+		<View style={{height: 250, width: 360}}>
 			<Image 
 				source={{uri: `https://heirtous.com/assets/images/uploads/${photoitem}`}}
 				resizeMode='contain'

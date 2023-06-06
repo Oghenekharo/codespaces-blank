@@ -22,7 +22,7 @@ export const stylesLight = StyleSheet.create({
 	},
 	linkText: {
 		paddingRight: 20, 
-		fontSize: 16,
+		fontSize: 18,
 		fontFamily: 'DMMedium',
 		color: COLORS.lighter
 	}

@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { View, Text, ScrollView, SafeAreaView, TouchableOpacity, StatusBar, TextInput, RefreshControl, Image, ActivityIndicator } from 'react-native'
-import { useThemeContext } from "../../context/auth";
-import { stylesLight, stylesDark} from '../../assets/styles/dashStyle'
-import { COLORS } from '../../assets/constants/constants'
+import { useThemeContext } from "../../../context/auth";
+import { stylesLight, stylesDark} from '../../../assets/styles/dashStyle'
+import { COLORS } from '../../../assets/constants/constants'
 import { Ionicons, FontAwesome, Feather, Entypo} from '@expo/vector-icons';
 import { Drawer } from 'expo-router/drawer';
-import { useRouter } from 'expo-router';
-import SearchForm from '../../assets/components/searchForm';
+import { useRouter, useSearchParams } from 'expo-router';
 
-const Services = () => {
+const ServiceResult = () => {
 	const [refreshing, setRefreshing] = useState(false);
 	const [services, setServices] = useState()
+	const [resultCount, setResultCount] = useState(0)
 	const {theme} = useThemeContext()
 	const router = useRouter()
+	const params = useSearchParams();
 	const fetchServices = () => {
 		const url = 'https://heirtous.com/api/services';
 		let formData = new FormData();
@@ -22,13 +23,15 @@ const Services = () => {
          headers: {'Content-Type': 'multipart/form-data'},
       };
 		
-		formData.append('query', 'showservices');
+		formData.append('query', 'search');
+		formData.append('searchkey', params.search);
+
 
 		axios
 		.post(url, formData, config)
 		.then((result) => {
-			// console.log(result.data.response)
 			setServices(result.data.response)
+			setResultCount(result.data.response.length)
 		})
 		.catch((error) => {
 			console.log(error)
@@ -54,7 +57,7 @@ const Services = () => {
 						fontFamily: 'DMMedium'
 					},
 					headerTintColor: theme == 'light' ? COLORS.dark : COLORS.white ,
-					headerTitle: `Services`,
+					headerTitle: `Results (${params.search})`,
 					headerTitleAlign: 'center',
 					headerRight: () => (
 						<TouchableOpacity style={{paddingRight: 12}} onPress={() => router.back()}>
@@ -66,11 +69,11 @@ const Services = () => {
 			<StatusBar 
 				barStyle={theme == 'light' ? 'dark-content' : 'light-content'}
 			/>
-			<SafeAreaView style={theme == 'light' ? stylesLight.page : stylesDark.page}>
-				<SearchForm query='services' />
-				<View>
-					<Text style={{textAlign: 'left', fontFamily: 'DMMedium', fontSize: 18, color: theme == 'light' ? COLORS.darkgray : COLORS.lightgray}}>Available services</Text>
-				</View>
+			<SafeAreaView style={[theme == 'light' ? stylesLight.page : stylesDark.page, {height: 820}]}>
+            <View style={{flexDirection: 'row', justifyContent: 'space-around', paddingBottom: 10}}>
+               <Text style={{textAlign: 'left', fontFamily: 'DMMedium', fontSize: 18, color: theme == 'light' ? COLORS.darkgray : COLORS.lightgray}}>Search Result</Text>
+				<Text style={{fontFamily: 'DMRegular', fontSize: 14, color: theme == 'light' ? COLORS.darkgray : COLORS.lightgray}}> ({resultCount} results)</Text>
+			</View>
 				<View style={{alignItems: 'center'}}>
 					<View style={{width: '100%'}}>
 						{services == null || services == undefined ? 
@@ -117,7 +120,7 @@ const Details = ({item}) => {
 					</View>
 				</View>
 				<View>
-					<TouchableOpacity onPress={() => router.push({pathname: `./service/${item.u_id}`, params: {u_id: item.u_id}})}>
+					<TouchableOpacity onPress={() => router.push({pathname: `../service/${item.u_id}`, params: {u_id: item.u_id}})}>
 						<Entypo name="chevron-right" color={COLORS.white} size={25} />
 					</TouchableOpacity>
 				</View>
@@ -126,4 +129,4 @@ const Details = ({item}) => {
 	)
 }
 
-export default Services
+export default ServiceResult

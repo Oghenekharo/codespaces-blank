@@ -7,6 +7,11 @@ import { Provider, Themes, useAuth } from "../context/auth";
 
 SplashScreen.preventAutoHideAsync();
 
+export const unstable_settings = {
+	// Ensure any route can link back to `/`
+	initialRouteName: "index",
+};
+
 const RootLayout = () => {
 	const [fontsLoaded] = useFonts({
 		DMBold: require("../assets/fonts/DMSans-Bold.ttf"),
