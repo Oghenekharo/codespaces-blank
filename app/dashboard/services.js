@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { View, Text, ScrollView, SafeAreaView, TouchableOpacity, StatusBar, TextInput, RefreshControl, Image, ActivityIndicator } from 'react-native'
-import { useThemeContext } from "../../context/auth";
+import { useThemeContext, useAuth } from "../../context/auth";
 import { stylesLight, stylesDark} from '../../assets/styles/dashStyle'
 import { COLORS } from '../../assets/constants/constants'
-import { Ionicons, FontAwesome, Feather, Entypo} from '@expo/vector-icons';
+import { Ionicons, FontAwesome, Entypo} from '@expo/vector-icons';
 import { Drawer } from 'expo-router/drawer';
 import { useRouter } from 'expo-router';
 import SearchForm from '../../assets/components/searchForm';
@@ -12,7 +12,8 @@ import SearchForm from '../../assets/components/searchForm';
 const Services = () => {
 	const [refreshing, setRefreshing] = useState(false);
 	const [services, setServices] = useState()
-	const {theme} = useThemeContext()
+	const {credentials} = useAuth()
+   const {theme} = credentials
 	const router = useRouter()
 	const fetchServices = () => {
 		const url = 'https://heirtous.com/api/services';
@@ -89,7 +90,8 @@ const Services = () => {
 }
 
 const Details = ({item}) => {
-	const {theme} = useThemeContext()
+	const {credentials} = useAuth()
+   const {theme} = credentials
 	const router = useRouter()
 	return (
 		<View style={{paddingHorizontal: 2, paddingVertical: 9}}>

@@ -1,16 +1,23 @@
 import Toggle from 'react-native-toggle-input'
-import { useThemeContext } from "../context/auth";
+import { useThemeContext, useAuth } from "../context/auth";
 import {useState, useEffect} from 'react'
 
 const Toggler = () => {
 	const [toggle, setToggle] = useState(false);
-	const {setTheme} = useThemeContext();
+	const {credentials, setCredentials} = useAuth()
+	const {theme, setTheme} = useThemeContext();
 	
 	useEffect(() => {
-		if (!toggle) {
-			setTheme('light');
-		} else {
+		if (toggle) {
 			setTheme('dark');
+			if(credentials != null){
+				setCredentials({...credentials, theme: 'dark'})
+			}
+		} else {
+			setTheme('light');
+			if(credentials != null){
+				setCredentials({...credentials, theme: 'light'})
+			}
 		}
 	}, [toggle])
 

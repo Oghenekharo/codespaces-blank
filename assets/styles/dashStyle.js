@@ -7,7 +7,7 @@ export const stylesLight = StyleSheet.create({
         padding: 15,
         height: '100%',
         width: '100%',
-        backgroundColor: COLORS.white,
+        backgroundColor: COLORS.snow,
         fontFamily: 'DMMedium'
     },
     container: {
@@ -128,7 +128,7 @@ export const stylesDark = StyleSheet.create({
       padding: 12,
       borderRadius: 10,
       borderWidth: 1,
-      color: COLORS.dimgray,
+      color: COLORS.white,
       height: 50,
       fontFamily: 'DMRegular',
       width: '90%',

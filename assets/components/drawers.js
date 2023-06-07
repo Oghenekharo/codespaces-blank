@@ -2,7 +2,7 @@ import { useState } from 'react';
 import {View, Text, TouchableOpacity, Image} from 'react-native'
 import {useRouter} from 'expo-router'
 import {Ionicons, FontAwesome, FontAwesome5, MaterialIcons} from '@expo/vector-icons';
-import { useThemeContext, useAuth } from "../../context/auth";
+import { useAuth } from "../../context/auth";
 import { stylesLight, stylesDark} from '../styles/drawerStyle'
 import Toggler from '../../app/toggle';
 import { COLORS } from '../constants/constants';
@@ -10,13 +10,12 @@ import { COLORS } from '../constants/constants';
 const Drawers = () => {
 	const {credentials, clearCredentials} = useAuth();
 	const [gitfShow, setGiftShow] = useState(false)
-	const {theme} = useThemeContext()
 	
 	if(credentials === null){
 		return null;
 	}else{
 		const router = useRouter();
-		const {fullname, photo, u_id, username} = credentials;
+		const {fullname, photo, u_id, username, theme} = credentials;
 		return (
 			<View style={{marginTop: 40, padding: 5}}>
 				<View

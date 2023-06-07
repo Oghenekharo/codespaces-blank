@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { View, Text, ScrollView, SafeAreaView, TouchableOpacity, StatusBar, TextInput, RefreshControl, Image, ActivityIndicator } from 'react-native'
-import { useThemeContext } from "../../../context/auth";
+import { useAuth } from "../../../context/auth";
 import { stylesLight, stylesDark} from '../../../assets/styles/dashStyle'
 import { COLORS } from '../../../assets/constants/constants'
 import { Ionicons, FontAwesome, Feather, Entypo} from '@expo/vector-icons';
@@ -10,9 +10,12 @@ import { useRouter, useSearchParams } from 'expo-router';
 
 const ServiceResult = () => {
 	const [refreshing, setRefreshing] = useState(false);
+	const [message, setMessage] = useState('')
+	const [status, setStatus] = useState('')
 	const [services, setServices] = useState()
 	const [resultCount, setResultCount] = useState(0)
-	const {theme} = useThemeContext()
+	const {credentials} = useAuth()
+   	const {theme} = credentials
 	const router = useRouter()
 	const params = useSearchParams();
 	const fetchServices = () => {
@@ -30,8 +33,15 @@ const ServiceResult = () => {
 		axios
 		.post(url, formData, config)
 		.then((result) => {
-			setServices(result.data.response)
-			setResultCount(result.data.response.length)
+			if(result.data.status == 'success'){
+				setServices(result.data.response)
+				setStatus('success')
+				setResultCount(result.data.response.length)
+			}else{
+				setStatus('error')
+				setServices("There are no results to show")
+				setMessage(result.data.response)
+			}
 		})
 		.catch((error) => {
 			console.log(error)
@@ -70,17 +80,21 @@ const ServiceResult = () => {
 				barStyle={theme == 'light' ? 'dark-content' : 'light-content'}
 			/>
 			<SafeAreaView style={[theme == 'light' ? stylesLight.page : stylesDark.page, {height: 820}]}>
-            <View style={{flexDirection: 'row', justifyContent: 'space-around', paddingBottom: 10}}>
+            <View style={{flexDirection: 'row', justifyContent: 'space-around', paddingBottom: 10, marginTop: 20}}>
                <Text style={{textAlign: 'left', fontFamily: 'DMMedium', fontSize: 18, color: theme == 'light' ? COLORS.darkgray : COLORS.lightgray}}>Search Result</Text>
 				<Text style={{fontFamily: 'DMRegular', fontSize: 14, color: theme == 'light' ? COLORS.darkgray : COLORS.lightgray}}> ({resultCount} results)</Text>
 			</View>
 				<View style={{alignItems: 'center'}}>
 					<View style={{width: '100%'}}>
 						{services == null || services == undefined ? 
-						<View style={{flex: 5, height: 600, justifyContent: 'center', alignItems: 'center', backgroundColor: theme == 'light' ? COLORS.white : COLORS.dark}}>
+						<View style={{height: 600, justifyContent: 'center', alignItems: 'center', backgroundColor: theme == 'light' ? COLORS.white : COLORS.dark}}>
 							<ActivityIndicator size="large" color={theme == 'light' ? COLORS.dark : COLORS.white} />
 						</View>
 						:
+						status == 'error' ?
+						<View style={{height: 600, alignItems: 'center', justifyContent: 'center'}}>
+							<Text style={{textAlign: 'center', color: theme == 'light' ? COLORS.dark : COLORS.white}}>{message}</Text>
+						</View> :
 						services.map((item, index) => (
 							<Details item={item} key={index} />
 						))}
@@ -92,7 +106,8 @@ const ServiceResult = () => {
 }
 
 const Details = ({item}) => {
-	const {theme} = useThemeContext()
+	const {credentials} = useAuth()
+	const {theme} = credentials
 	const router = useRouter()
 	return (
 		<View style={{paddingHorizontal: 2, paddingVertical: 9}}>

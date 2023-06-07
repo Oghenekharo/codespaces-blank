@@ -1,9 +1,10 @@
 import React from 'react'
 import {View, Text} from 'react-native'
-import { useThemeContext } from '../../../context/auth'
+import { useAuth } from '../../../context/auth'
 
 const AddGifts = () => {
-	const {theme} = useThemeContext()
+	const {credentials} = useAuth()
+   const {theme} = credentials
    return (
 		<View>
 			<Text style={{fontFamily: 'DMMedium'}}>Add Gifts</Text>

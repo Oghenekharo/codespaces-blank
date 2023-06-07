@@ -4,10 +4,11 @@ import { COLORS } from '../constants/constants'
 import {Feather} from '@expo/vector-icons'
 import {useRouter} from 'expo-router'
 import { stylesLight, stylesDark } from '../styles/dashStyle'
-import { useThemeContext } from '../../context/auth'
+import { useAuth } from '../../context/auth'
 
 const SearchForm = ({query}) => {
-	const {theme} = useThemeContext()
+	const {credentials} = useAuth()
+   	const {theme} = credentials
 	const router = useRouter()
 	const [searchKey, setSearchKey] = useState('')
 	const [placeholderText, setPlaceHolderText] = useState('')

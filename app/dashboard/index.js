@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {View, Text, ScrollView, SafeAreaView, TouchableOpacity, StatusBar, TextInput, RefreshControl} from 'react-native'
-import { Entypo, Feather, Fontisto, Foundation, FontAwesome5 } from '@expo/vector-icons';
+import { Entypo, Feather, Fontisto, Foundation, FontAwesome } from '@expo/vector-icons';
 import { useThemeContext, useAuth } from "../../context/auth";
 import { stylesLight, stylesDark} from '../../assets/styles/dashStyle'
 import { COLORS } from '../../assets/constants/constants'
@@ -14,10 +14,20 @@ const tabs = ["radio", "tv"];
 
 const Dashboard = () => {
 	const [refreshing, setRefreshing] = useState(false);
-	const {credentials, clearCredentials} = useAuth();
+	const {credentials, setCredentials} = useAuth();
 	const [activeTab, setActiveTab] = useState(tabs[0]);
-	const {theme, setTheme} = useThemeContext()
-	const {username} = credentials;
+	
+	const {username, theme} = credentials;
+
+	useEffect(()=> {
+		if(credentials){
+			if(credentials.theme != 'light'){
+				setCredentials({...credentials, theme: 'dark'})
+			}else{
+				setCredentials({...credentials, theme: 'light'})
+			}
+		}
+	},[])
 
 	const displayTabContent = () => {
     	switch(activeTab) {
@@ -37,7 +47,7 @@ const Dashboard = () => {
 				)
         	break;
       }
-  }
+  	}
 	return (
 		<ScrollView 
 			showsVerticalScrollIndicator={false} 
@@ -59,7 +69,7 @@ const Dashboard = () => {
 					headerTitleAlign: 'center',
 					headerRight: () => (
 						<TouchableOpacity style={{paddingRight: 12}} onPress={() => {}}>
-							<Entypo name="user" color={theme == 'light' ? COLORS.dark : COLORS.white } size={20} />
+							<FontAwesome name="user-circle" color={theme == 'light' ? COLORS.dark : COLORS.white } size={20} />
 						</TouchableOpacity>
 					)
 				}}

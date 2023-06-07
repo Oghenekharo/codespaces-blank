@@ -6,7 +6,7 @@ import {COLORS} from '../constants/constants'
 import { Entypo } from '@expo/vector-icons';
 
 const MyModal = ({message, visible, setModalVisible, type}) => {
-	const {theme} = useThemeContext();
+   	const {theme} = useThemeContext()
 	return (
    	<Modal
 			visible={visible}

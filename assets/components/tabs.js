@@ -1,10 +1,11 @@
 import React from 'react'
 import { View, Text, TouchableOpacity, FlatList } from 'react-native'
 import {COLORS} from '../constants/constants'
-import { useThemeContext } from "../../context/auth";
+import { useAuth } from "../../context/auth";
 
 const TabButton = ({name, activeTab, handlePress}) => {
-	const {theme} = useThemeContext()
+	const {credentials} = useAuth()
+  const {theme} = credentials
   return(
     <TouchableOpacity 
       style={{

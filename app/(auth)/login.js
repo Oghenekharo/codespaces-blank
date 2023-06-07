@@ -82,7 +82,8 @@ const Login = () => {
                     	photo: result.response.profileimg,
 							regDate: result.response.reg_date,
 							userstatus: result.response.userstatus,
-							verified: result.response.verified
+							verified: result.response.verified,
+							theme: theme
                 	}
 						setModalVisible(true)
 						handleMessage('success',"Login successful")
@@ -114,8 +115,7 @@ const Login = () => {
         .catch((error) => {
             console.log(error)
       	})
-   }
-
+	}
 	if(credentials !== null) {
 		return (
 			<View style={{flex: 1, height: 900, justifyContent: 'center', alignItems: 'center', backgroundColor: theme == 'light' ? COLORS.white : COLORS.dark}}>

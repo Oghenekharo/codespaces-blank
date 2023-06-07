@@ -7,6 +7,7 @@ const AuthContext = React.createContext({
 	setCredentials: () => {},
   clearCredentials: () => {}
 });
+
 const ThemeContext = React.createContext({
 	theme: '',
 	setTheme: () => {}
@@ -39,8 +40,6 @@ function useProtectedRoute(user) {
       // Redirect away from the sign-in page.
       if(user.userstatus == 1){
         router.push('/dashboard')
-      }else{
-        router.replace("/authDrawers");
       }
     }
   }, [user, segments]);
@@ -48,7 +47,7 @@ function useProtectedRoute(user) {
 
 export function Provider(props) {
   
-  const [credentials, setCredentials] = useState();
+  const [credentials, setCredentials] = useState({});
   const router = useRouter()
   
   const clearCredentials = () => {

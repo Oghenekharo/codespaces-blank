@@ -3,7 +3,7 @@ import { Stack } from 'expo-router'
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { SafeAreaProvider } from 'react-native-safe-area-context'
-import { Provider, Themes, useAuth } from "../context/auth";
+import { Provider, Themes } from "../context/auth";
 
 SplashScreen.preventAutoHideAsync();
 

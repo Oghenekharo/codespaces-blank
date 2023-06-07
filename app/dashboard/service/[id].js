@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import {View, Text, TouchableOpacity, ScrollView, ActivityIndicator, SafeAreaView, Modal, TextInput, RefreshControl, FlatList, Image} from 'react-native'
 import { Stack, useRouter, useSearchParams } from 'expo-router'
-import { useThemeContext, useAuth } from "../../../context/auth";
+import { useAuth } from "../../../context/auth";
 import { COLORS } from '../../../assets/constants/constants'
 import { Ionicons, FontAwesome, Entypo} from '@expo/vector-icons';
 import { Drawer } from 'expo-router/drawer'
@@ -27,9 +27,9 @@ const Service = () => {
 	const [owner, setOwner] = useState('')
    const params = useSearchParams();
    const router = useRouter()
-   const {theme} = useThemeContext()
-	const {credentials} = useAuth()
-	const {user_id, username} = credentials
+   const {credentials} = useAuth()
+	const {user_id, username, theme} = credentials
+	const [photos, setPhotos] = useState([])
     
    const fetchService = () => {
 		const url = 'https://heirtous.com/api/services';
@@ -51,7 +51,12 @@ const Service = () => {
 				setComments(result.data.comment)
 				setCStat(result.data.c_status)
 				setOwner(result.data.owner)
-				// console.log(photosarr)
+				if(photos.length <= 0){
+					setPhotos(photos => [...photos, result.data.response[0].u_photo1])
+					if(result.data.response[0].u_photo2 != null){
+						setPhotos(photos => [...photos, result.data.response[0].u_photo2])
+					}
+				}
 			}else{
 				console.log(result.data.response)
 			}
@@ -148,13 +153,14 @@ const Service = () => {
 					<Text style={{fontFamily: 'DMBold', fontSize: 16, color: theme == 'light' ? COLORS.dark : COLORS.lightgray}}>Service Details</Text>
 					<View style={{width: '100%', marginTop: 10}}>
 						{service && <FlatList
-							data={[service[0].u_photo1,service[0].u_photo2]}
+							data={photos && photos}
 							renderItem={({ item }) => (
 								<ImagesList photoitem={item} />
 							)}
 							keyExtractor={(item) => item}
 							contentContainerStyle={{ columnGap: 3 }}
 							horizontal
+							showsHorizontalScrollIndicator={false}
 						/>}
 					</View>
 					<View style={{margin: 10}}>
@@ -287,8 +293,8 @@ const ImagesList = ({photoitem}) => {
 }
 
 const Comment = ({comments, count}) => {
-	const {theme} = useThemeContext()
-	// console.log(comments)
+	const {credentials} = useAuth()
+	const {theme} = credentials
 	return (
 		<ScrollView style={{maxHeight: 300, backgroundColor: theme == 'light' ? COLORS.lightgray : COLORS.lighter, padding: 10, borderRadius: 10}} showsVerticalScrollIndicator={false}>
 			{count == 0 ? <View> 
@@ -305,14 +311,6 @@ const Comment = ({comments, count}) => {
 			</View>
 			}
 		</ScrollView>
-	)
-}
-
-const CommentForm = () => {
-	return (
-		<View>
-			<Text>CommentForm</Text>
-		</View>
 	)
 }
 

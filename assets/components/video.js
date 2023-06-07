@@ -1,12 +1,13 @@
 import React from 'react'
 import {View, Text, TouchableOpacity} from 'react-native'
-import { useThemeContext, useAuth } from "../../context/auth";
+import {useAuth } from "../../context/auth";
 import { stylesLight, stylesDark} from '../styles/videoStyle';
 import { Entypo, Feather, Fontisto, Foundation, FontAwesome5 } from '@expo/vector-icons';
 import { COLORS } from '../constants/constants';
 
 const VideoPlayer = () => {
-   const {theme} = useThemeContext()
+   const {credentials} = useAuth()
+   const {theme} = credentials
    const files = [1, 2, 3, 4, 5, 6, 7]
    const loadMp3 = () => {
 
@@ -36,7 +37,8 @@ const VideoPlayer = () => {
 }
 
 const Videos = ({title}) => {
-   const {theme} = useThemeContext()
+   const {credentials} = useAuth()
+	const {theme} = credentials
    return (
       <View style={theme == 'light' ? stylesLight.videosContainer : stylesDark.videosContainer}>
          <View style={theme == 'light' ? stylesLight.videosItemHolder : stylesDark.videosItemHolder}>

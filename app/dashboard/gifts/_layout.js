@@ -2,12 +2,12 @@ import React from 'react'
 import { Tabs, useRouter } from 'expo-router'
 import { TouchableOpacity } from 'react-native';
 import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
-import { useThemeContext, useAuth } from "../../../context/auth";
-import {COLORS, SITE_NAME} from '../../../assets/constants/constants'
+import { useAuth } from "../../../context/auth";
+import {COLORS} from '../../../assets/constants/constants'
 
 const GiftLayout = () => {
-const {theme} = useThemeContext();
-// const {credentials} = useAuth()
+const {credentials} = useAuth()
+const {theme} = credentials
 const router = useRouter()
   return ( 
 		<Tabs screenOptions={{
@@ -31,6 +31,10 @@ const router = useRouter()
                     headerTitleStyle: {
                         fontFamily: 'DMRegular',
                     },
+					headerStyle: {
+						backgroundColor: theme == 'light' ? COLORS.white : COLORS.dark,
+					},
+					headerTintColor: theme == 'light' ? COLORS.dark : COLORS.white ,
                     headerLeft: () => (
 						<TouchableOpacity style={{paddingLeft: 16}} onPress={() => router.back()}>
 							<Ionicons name="arrow-back" color={theme == 'light' ? COLORS.dark : COLORS.white } size={23} />

@@ -3,10 +3,11 @@ import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Drawers from '../../assets/components/drawers'
 import {COLORS} from '../../assets/constants/constants'
-import { useThemeContext } from "../../context/auth";
+import { useAuth } from "../../context/auth";
 
 const HomeLayout = () => {
-  const {theme, setTheme} = useThemeContext()
+  const {credentials} = useAuth()
+  const {theme} = credentials
   return (
     <Drawer 
         screenOptions={{
