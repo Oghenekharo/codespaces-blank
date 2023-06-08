@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { View, Text, ScrollView, SafeAreaView, TouchableOpacity, StatusBar, TextInput, RefreshControl, Image, ActivityIndicator } from 'react-native'
-import { useAuth } from "../../../context/auth";
-import { stylesLight, stylesDark} from '../../../assets/styles/dashStyle'
-import { COLORS } from '../../../assets/constants/constants'
+import { useAuth } from "../../../../context/auth";
+import { stylesLight, stylesDark} from '../../../../assets/styles/dashStyle'
+import { COLORS } from '../../../../assets/constants/constants'
 import { Ionicons, FontAwesome, Feather, Entypo} from '@expo/vector-icons';
 import { Drawer } from 'expo-router/drawer';
 import { useRouter, useSearchParams } from 'expo-router';

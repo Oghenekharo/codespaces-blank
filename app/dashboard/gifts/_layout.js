@@ -49,6 +49,10 @@ const router = useRouter()
 					headerShown: true,
 					headerTitle: 'Add Gifts',
 					headerTitleAlign: 'center',
+					headerStyle: {
+						backgroundColor: theme == 'light' ? COLORS.white : COLORS.dark,
+					},
+					headerTintColor: theme == 'light' ? COLORS.dark : COLORS.white ,
 					title: 'Add Gifts',
                     headerLeft: () => (
 						<TouchableOpacity style={{paddingLeft: 16}} onPress={() => router.back()}>
@@ -68,6 +72,10 @@ const router = useRouter()
 					headerTitle: 'My Gifts',
 					headerTitleAlign: 'center',
 					title: 'My Gifts',
+					headerStyle: {
+						backgroundColor: theme == 'light' ? COLORS.white : COLORS.dark,
+					},
+					headerTintColor: theme == 'light' ? COLORS.dark : COLORS.white ,
                     headerTitleStyle: {
                         fontFamily: 'DMRegular',
                     },
@@ -77,6 +85,16 @@ const router = useRouter()
 						</TouchableOpacity>
 					),
 					tabBarIcon: ({ focused }) => <Ionicons name="gift" color={focused && theme == 'light' ? COLORS.blue : focused && theme == 'dark' ? COLORS.white : COLORS.lightText } size={25} />
+				}}
+			/>
+			<Tabs.Screen
+				name='gift/[gift]'
+				options={{
+					// This tab will no longer show up in the tab bar.
+					href: null,
+					tabBarStyle: {
+						display: 'none'
+					}
 				}}
 			/>
 		</Tabs>

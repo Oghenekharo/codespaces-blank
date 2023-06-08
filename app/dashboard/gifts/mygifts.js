@@ -38,7 +38,7 @@ const MyGifts = () => {
 
    useEffect(() => {
 		fetchGifts()
-	}, [])
+	}, [gifts])
 
    return (
 		<ScrollView
@@ -102,7 +102,7 @@ const Details = ({item}) => {
 					</View>
 				</View>
 				<View>
-					<TouchableOpacity onPress={() => router.push({pathname: `../gift/${item.gift_id}`, params: {gift_id: item.gift_id}})}>
+					<TouchableOpacity onPress={() => router.push({pathname: `./gift/${item.gift_id}`, params: {gift_id: item.gift_id}})}>
 						<Entypo name="chevron-right" color={COLORS.white} size={25} />
 					</TouchableOpacity>
 				</View>
