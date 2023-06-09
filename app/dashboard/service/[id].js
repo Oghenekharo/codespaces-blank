@@ -7,6 +7,7 @@ import { Ionicons, FontAwesome, Entypo} from '@expo/vector-icons';
 import { Drawer } from 'expo-router/drawer'
 import axios from 'axios';
 import { stylesLight, stylesDark } from './serviceStyle';
+import {decode} from 'html-entities';
 
 
 
@@ -128,7 +129,7 @@ const Service = () => {
 			<SafeAreaView style={theme == 'light' ? stylesLight.page : stylesDark.page}>
 				<Drawer.Screen
 					options={{
-						headerTitle: `${service && service[0].u_name}`,
+						headerTitle: `${service && decode(service[0].u_name)}`,
 						headerStyle: {
 							backgroundColor: theme == 'light' ? COLORS.white : COLORS.dark,
 							elevation: 5,
@@ -170,15 +171,15 @@ const Service = () => {
 						</View>
 						<View style={{marginBottom: 15}}>
 							<Text style={{fontFamily: 'DMMedium', fontSize: 18, color: theme == 'light' ? COLORS.dark : COLORS.lightgray, paddingBottom: 3}}>Service:</Text>
-							<Text style={{fontFamily: 'DMRegular', fontSize: 14, color: theme == 'light' ? COLORS.dark : COLORS.lightgray}}>{service[0].u_name}</Text>
+							<Text style={{fontFamily: 'DMRegular', fontSize: 14, color: theme == 'light' ? COLORS.dark : COLORS.lightgray}}>{decode(service[0].u_name)}</Text>
 						</View>
 						<View style={{marginBottom: 15}}>
 							<Text style={{fontFamily: 'DMMedium', fontSize: 18, color: theme == 'light' ? COLORS.dark : COLORS.lightgray, paddingBottom: 3}}>Location:</Text>
-							<Text style={{fontFamily: 'DMRegular', fontSize: 14, color: theme == 'light' ? COLORS.dark : COLORS.lightgray}}>{service[0].u_location}</Text>
+							<Text style={{fontFamily: 'DMRegular', fontSize: 14, color: theme == 'light' ? COLORS.dark : COLORS.lightgray}}>{decode(service[0].u_location)}</Text>
 						</View>
 						<View style={{marginBottom: 15}}>
 							<Text style={{fontFamily: 'DMMedium', fontSize: 18, color: theme == 'light' ? COLORS.dark : COLORS.lightgray, paddingBottom: 3}}>Church:</Text>
-							<Text style={{fontFamily: 'DMRegular', fontSize: 14, color: theme == 'light' ? COLORS.dark : COLORS.lightgray}}>{service[0].u_church}</Text>
+							<Text style={{fontFamily: 'DMRegular', fontSize: 14, color: theme == 'light' ? COLORS.dark : COLORS.lightgray}}>{decode(service[0].u_church)}</Text>
 						</View>
 						<View style={{marginBottom: 15}}>
 							<Text style={{fontFamily: 'DMMedium', fontSize: 18, color: theme == 'light' ? COLORS.dark : COLORS.lightgray, paddingBottom: 3}}>Contact:</Text>
@@ -187,7 +188,7 @@ const Service = () => {
 						</View>
 						<View style={{marginBottom: 15}}>
 							<Text style={{fontFamily: 'DMMedium', fontSize: 18, color: theme == 'light' ? COLORS.dark : COLORS.lightgray, paddingBottom: 3}}>Description:</Text>
-							<Text style={{fontFamily: 'DMRegular', fontSize: 14, color: theme == 'light' ? COLORS.dark : COLORS.lightgray, lineHeight: 25}}>{service[0].u_desc}</Text>
+							<Text style={{fontFamily: 'DMRegular', fontSize: 14, color: theme == 'light' ? COLORS.dark : COLORS.lightgray, lineHeight: 25}}>{decode(service[0].u_desc)}</Text>
 						</View>
 					</View>
 					<View style={{margin: 10}}>
@@ -304,7 +305,7 @@ const Comment = ({comments, count}) => {
 				{comments && comments.map((item, index) => (
 					<View key={index} style={{marginBottom: 8}}>
 						<Text style={{fontFamily: 'DMBold', fontSize: 17, marginBottom: 3, color: theme == 'light' ? COLORS.dark : COLORS.lightgray}}>{item.username}</Text>
-						<Text style={{fontFamily: 'DMRegular', fontSize: 14, marginBottom: 3, color: theme == 'light' ? COLORS.dark : COLORS.lightgray}}>{item.comment}</Text>
+						<Text style={{fontFamily: 'DMRegular', fontSize: 14, marginBottom: 3, color: theme == 'light' ? COLORS.dark : COLORS.lightgray}}>{decode(item.comment)}</Text>
 						<Text style={{fontFamily: 'DMBold', fontSize: 12, marginBottom: 3, color: theme == 'light' ? COLORS.dark : COLORS.lightgray}}>{item.comm_date}</Text>
 					</View>
 				))}

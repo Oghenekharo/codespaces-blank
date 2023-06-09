@@ -1,4 +1,4 @@
-import { useRouter, useSegments } from "expo-router";
+import { useRouter, useNavigation, useSegments } from "expo-router";
 import React, {useState, useEffect} from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -26,6 +26,7 @@ export function useThemeContext(){
 function useProtectedRoute(user) {
   const segments = useSegments();
   const router = useRouter();
+  const navigation = useNavigation()
 
   React.useEffect(() => {
     const inAuthGroup = segments[0] === "(auth)";
@@ -35,11 +36,11 @@ function useProtectedRoute(user) {
       !user && !inAuthGroup
     ) {
       // Redirect to the sign-in page.
-      router.replace("/(auth)/login");
+      router.push("/(auth)/login");
     } else if (user && inAuthGroup) {
       // Redirect away from the sign-in page.
       if(user.userstatus == 1){
-        router.push('/dashboard')
+        router.replace('/dashboard', {screen: 'index'})
       }
     }
   }, [user, segments]);

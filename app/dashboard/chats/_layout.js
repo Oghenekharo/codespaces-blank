@@ -1,12 +1,10 @@
-
 import React from 'react'
 
-
-import { Drawer } from 'expo-router/drawer'
+import { Stack } from 'expo-router'
 
 const Lay = () => {
    return (
-      <Drawer />
+      <Stack />
     )
 }
 

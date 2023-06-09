@@ -1,16 +1,17 @@
 import React, {useState, useEffect} from 'react'
 import {View, Text, TouchableOpacity, ScrollView, ActivityIndicator, SafeAreaView, Modal, TextInput, RefreshControl, FlatList, Image} from 'react-native'
-import { Stack, useRouter, useSearchParams } from 'expo-router'
+import { useRouter, useSearchParams } from 'expo-router'
 import { useAuth } from "../../../../context/auth";
 import { COLORS } from '../../../../assets/constants/constants'
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import { Drawer } from 'expo-router/drawer'
 import axios from 'axios';
 import { stylesLight, stylesDark } from '../../service/serviceStyle';
+import {decode} from 'html-entities';
 
 
 
-const Service = () => {
+const Gift = () => {
    const [refreshing, setRefreshing] = useState(false);
 
 	const [isSubmitting, setIsSubmitting] = useState(false);
@@ -151,28 +152,28 @@ const Service = () => {
 					<View style={{margin: 10}}>
 						<View style={{marginBottom: 15}}>
 							<Text style={{fontFamily: 'DMMedium', fontSize: 18, color: theme == 'light' ? COLORS.dark : COLORS.lightgray, paddingBottom: 3}}>Posted by:</Text>
-							<Text style={{fontFamily: 'DMRegular', fontSize: 14, color: theme == 'light' ? COLORS.dark : COLORS.lightgray}}>{gift[0].username} {gift[0].verified == 1 ? <FontAwesome name='check-circle' color={theme == 'light' ?  'green' : COLORS.lightgray} size={15}  /> : ''}</Text>
+							<Text selectable style={{fontFamily: 'DMRegular', fontSize: 14, color: theme == 'light' ? COLORS.dark : COLORS.lightgray}}>{gift[0].username} {gift[0].verified == 1 ? <FontAwesome name='check-circle' color={theme == 'light' ?  'green' : COLORS.lightgray} size={15}  /> : ''}</Text>
 						</View>
 						<View style={{marginBottom: 15}}>
 							<Text style={{fontFamily: 'DMMedium', fontSize: 18, color: theme == 'light' ? COLORS.dark : COLORS.lightgray, paddingBottom: 3}}>Date Added:</Text>
-							<Text style={{fontFamily: 'DMRegular', fontSize: 14, color: theme == 'light' ? COLORS.dark : COLORS.lightgray}}>{gift[0].date_added}</Text>
+							<Text selectable style={{fontFamily: 'DMRegular', fontSize: 14, color: theme == 'light' ? COLORS.dark : COLORS.lightgray}}>{gift[0].date_added}</Text>
 						</View>
 						<View style={{marginBottom: 15}}>
 							<Text style={{fontFamily: 'DMMedium', fontSize: 18, color: theme == 'light' ? COLORS.dark : COLORS.lightgray, paddingBottom: 3}}>Location:</Text>
-							<Text style={{fontFamily: 'DMRegular', fontSize: 14, color: theme == 'light' ? COLORS.dark : COLORS.lightgray}}>{gift[0].location}</Text>
+							<Text selectable style={{fontFamily: 'DMRegular', fontSize: 14, color: theme == 'light' ? COLORS.dark : COLORS.lightgray}}>{gift[0].location}</Text>
 						</View>
 						<View style={{marginBottom: 15}}>
 							<Text style={{fontFamily: 'DMMedium', fontSize: 18, color: theme == 'light' ? COLORS.dark : COLORS.lightgray, paddingBottom: 3}}>Church:</Text>
-							<Text style={{fontFamily: 'DMRegular', fontSize: 14, color: theme == 'light' ? COLORS.dark : COLORS.lightgray}}>{gift[0].church}</Text>
+							<Text selectable style={{fontFamily: 'DMRegular', fontSize: 14, color: theme == 'light' ? COLORS.dark : COLORS.lightgray}}>{decode(gift[0].church)}</Text>
 						</View>
 						<View style={{marginBottom: 15}}>
 							<Text style={{fontFamily: 'DMMedium', fontSize: 18, color: theme == 'light' ? COLORS.dark : COLORS.lightgray, paddingBottom: 3}}>Contact:</Text>
-							<Text style={{fontFamily: 'DMRegular', fontSize: 14, color: theme == 'light' ? COLORS.dark : COLORS.lightgray, paddingBottom: 3}}>{gift[0].phone}</Text>
-							<Text style={{fontFamily: 'DMRegular', fontSize: 14, color: theme == 'light' ? COLORS.dark : COLORS.lightgray}}>{gift[0].email}</Text>
+							<Text selectable style={{fontFamily: 'DMRegular', fontSize: 14, color: theme == 'light' ? COLORS.dark : COLORS.lightgray, paddingBottom: 3}}>{gift[0].phone}</Text>
+							<Text selectable style={{fontFamily: 'DMRegular', fontSize: 14, color: theme == 'light' ? COLORS.dark : COLORS.lightgray}}>{gift[0].email}</Text>
 						</View>
 						<View style={{marginBottom: 15}}>
 							<Text style={{fontFamily: 'DMMedium', fontSize: 18, color: theme == 'light' ? COLORS.dark : COLORS.lightgray, paddingBottom: 3}}>Description:</Text>
-							<Text style={{fontFamily: 'DMRegular', fontSize: 14, color: theme == 'light' ? COLORS.dark : COLORS.lightgray, lineHeight: 25}}>{gift[0].description}</Text>
+							<Text selectable style={{fontFamily: 'DMRegular', fontSize: 14, color: theme == 'light' ? COLORS.dark : COLORS.lightgray, lineHeight: 25}}>{decode(gift[0].description)}</Text>
 						</View>
 					</View>
 				</View>
@@ -197,7 +198,11 @@ const Service = () => {
 						))}
 						</ScrollView>
 					</View>
-					: ''}
+					: <View style={{alignItems: 'center'}}>
+							<TouchableOpacity onPress={() => router.push({pathname: `/dashboard/chats/${params.gift_id}`, params: {receiverName: gift[0].username, receiverPhoto: gift[0].photo, owner: gift[0].user_id, sender: user_id, gift_id: params.gift_id, receiver: gift[0].user_id}})} style={[stylesLight.button, {width: 200}]}>
+								<Text style={stylesLight.buttonText}>Chat with giver</Text>
+							</TouchableOpacity>
+					</View>}
 				</View>
 			</SafeAreaView>}
 		</ScrollView>
@@ -219,9 +224,9 @@ const ImagesList = ({photoitem}) => {
 const ChatList = ({chat}) => {
 	const {credentials} = useAuth()
 	const router = useRouter()
-	const {theme} = credentials;
+	const {theme, user_id} = credentials;
 	return (
-		<TouchableOpacity style={{padding: 10}} onPress={() => router.push({pathname: "../../chats/", params: {receiver: chat.username, gift_id: chat.gift_id, user_id: chat.sender}})}>
+		<TouchableOpacity style={{padding: 10}} onPress={() => router.push({pathname: `/dashboard/chats/${chat.gift_id}`, params: {receiverName: chat.username, receiverPhoto: chat.photo, sender: user_id, gift_id: chat.gift_id, owner: user_id, receiver: chat.sender}})}>
 				<View style={
 					{
 						backgroundColor: theme == 'light' ? COLORS.blue : COLORS.lightBody,
@@ -240,7 +245,7 @@ const ChatList = ({chat}) => {
 						/>
 						<View style={{paddingLeft: 15, paddingTop: 10, width: 160}}>
 							<Text style={{fontFamily: 'DMBold', color: COLORS.white, fontSize: 16, marginBottom: 7}}>{chat.fullname}</Text>
-							<Text numberOfLines={1} style={{fontFamily: 'DMRegular', color: COLORS.lightgray}}>{chat.message}</Text>
+							<Text numberOfLines={1} style={{fontFamily: 'DMRegular', color: COLORS.lightgray}}>{decode(chat.message)}</Text>
 						</View>
 					</View>
 					<View>
@@ -252,4 +257,4 @@ const ChatList = ({chat}) => {
 	)
 }
 
-export default Service
+export default Gift

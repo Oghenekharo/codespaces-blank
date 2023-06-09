@@ -8,6 +8,7 @@ import { Ionicons, FontAwesome, Entypo} from '@expo/vector-icons';
 import { Drawer } from 'expo-router/drawer';
 import { useRouter } from 'expo-router';
 import SearchForm from '../../assets/components/searchForm';
+import {decode} from 'html-entities';
 
 const Services = () => {
 	const [refreshing, setRefreshing] = useState(false);
@@ -28,7 +29,6 @@ const Services = () => {
 		axios
 		.post(url, formData, config)
 		.then((result) => {
-			// console.log(result.data.response)
 			setServices(result.data.response)
 		})
 		.catch((error) => {
@@ -106,20 +106,20 @@ const Details = ({item}) => {
 					/>
 					<View style={{paddingLeft: 10}}>
 						<View style={{marginBottom: 2}}>
-							<Text style={theme == 'light' ? stylesLight.serviceType : stylesDark.serviceType}>{item.u_type}</Text>
+							<Text style={theme == 'light' ? stylesLight.serviceType : stylesDark.serviceType}>{decode(item.u_type)}</Text>
 						</View>
-						<Text style={theme == 'light' ? stylesLight.serviceName : stylesDark.serviceName}>{item.u_name} </Text>
+						<Text style={theme == 'light' ? stylesLight.serviceName : stylesDark.serviceName}>{decode(item.u_name)} </Text>
 						<View style={{}}>
 							<Text style={[theme == 'light' ? stylesLight.serviceText : stylesDark.serviceText, {fontSize: 9}]}>Posted by</Text>
 							<Text style={theme == 'light' ? stylesLight.serviceText : stylesDark.serviceText}>{item.u_user} {item.verified == 1 ? <FontAwesome name='check-circle' color={COLORS.white}  /> : <Entypo />}</Text>
 						</View>
 						<View style={{}}>
-							<Text style={theme == 'light' ? stylesLight.serviceText : stylesDark.serviceText}>{item.u_location}</Text>
+							<Text style={theme == 'light' ? stylesLight.serviceText : stylesDark.serviceText}>{decode(item.u_location)}</Text>
 						</View>
 					</View>
 				</View>
 				<View>
-					<TouchableOpacity onPress={() => router.push({pathname: `./service/${item.u_id}`, params: {u_id: item.u_id}})}>
+					<TouchableOpacity onPress={() => router.push({pathname: `/dashboard/service/${item.u_id}`, params: {u_id: item.u_id}})}>
 						<Entypo name="chevron-right" color={COLORS.white} size={25} />
 					</TouchableOpacity>
 				</View>
